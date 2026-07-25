@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>London | Europe 2026</title>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Firebase -->
+    <script type="module">
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import {
+            getDatabase,
+            ref,
+            onValue,
+            set
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBtuWWeL1zCTuNHa1ft6EUbn_Esyxn2nUs",
+            authDomain: "japan-2025-36f45.firebaseapp.com",
+            projectId: "japan-2025-36f45",
+            storageBucket: "japan-2025-36f45.appspot.com",
+            messagingSenderId: "985861478220",
+            appId: "1:985861478220:web:56888dc3fd9340b35321e9",
+            databaseURL:
+                "https://japan-2025-36f45-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.firebaseDB = database;
+        window.firebaseRef = ref;
+        window.firebaseOnValue = onValue;
+        window.firebaseSet = set;
+
+        window.dispatchEvent(new Event("firebaseReady"));
+    </script>
+
+    <style>
+        :root {
+            --navy: #16324f;
+            --navy-light: #244d70;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --light-grey: #eeeeee;
+            --dark-overlay: rgba(0, 0, 0, 0.64);
+            --card-background: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            background:
+                    linear-gradient(
+                            var(--dark-overlay),
+                            var(--dark-overlay)
+                    ),
+                    url("./Visuals/london.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--white);
+        }
+
+        header {
+            padding: 2.5rem 1rem;
+            background: rgba(22, 50, 79, 0.88);
+            border-bottom: 3px solid var(--gold);
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(3rem, 9vw, 5rem);
+            letter-spacing: 5px;
+            color: var(--white);
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        main {
+            width: min(100% - 2rem, 850px);
+            margin: 0 auto;
+            padding: 2rem 0 4rem;
+        }
+
+        .content {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.58);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .content h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .content p {
+            line-height: 1.7;
+        }
+
+        .accommodation-card {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: var(--card-background);
+        }
+
+        .accommodation-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .accommodation-title {
+            margin-bottom: 0.75rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            display: block;
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .booking-link {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .booking-link:hover,
+        .booking-link:focus {
+            text-decoration: underline;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 0.8rem 0;
+            padding: 0.7rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .activity-item input[type="checkbox"] {
+            width: 19px;
+            height: 19px;
+            margin: 0;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+
+        .activity-item label {
+            flex: 1;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .activity-item a {
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .activity-item a:hover,
+        .activity-item a:focus {
+            text-decoration: underline;
+        }
+
+        .instagram-icon {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            vertical-align: middle;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: var(--light-grey);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: 10px;
+            background-color: var(--gold);
+            transition: width 0.35s ease;
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.94);
+            color: #222222;
+            font: inherit;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+            outline: 2px solid rgba(212, 175, 55, 0.35);
+        }
+
+        .primary-button,
+        .navigation-button {
+            padding: 0.9rem 1.2rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background-color: var(--navy);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition:
+                    background-color 0.3s ease,
+                    border-color 0.3s ease,
+                    transform 0.3s ease;
+        }
+
+        .primary-button:hover,
+        .primary-button:focus,
+        .navigation-button:hover,
+        .navigation-button:focus {
+            border-color: var(--gold);
+            background-color: var(--navy-light);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .form-message {
+            min-height: 1.2rem;
+            margin-top: 0.7rem;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .loading-message,
+        .empty-message {
+            color: #dddddd;
+            font-style: italic;
+        }
+
+        footer {
+            padding: 1.3rem 1rem;
+            background: rgba(22, 50, 79, 0.9);
+            border-top: 2px solid var(--gold);
+            text-align: center;
+            color: #eeeeee;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            main {
+                width: min(100% - 1rem, 850px);
+            }
+
+            .content {
+                padding: 1.1rem;
+            }
+
+            .slide img {
+                height: 220px;
+            }
+
+            .activity-item {
+                align-items: flex-start;
+            }
+
+            .navigation-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>LONDON</h1>
+    <p>United Kingdom · Europe 2026</p>
+</header>
+
+<main>
+
+    <section class="content">
+        <h2>📍 Welcome to London</h2>
+
+        <p>
+            Explore London’s historic landmarks, museums, markets,
+            neighbourhoods, restaurants, and famous views.
+        </p>
+    </section>
+
+    <section class="content" id="accommodationsContainer">
+        <h2>🏨 Where We Are Staying</h2>
+
+        <p class="loading-message" id="accommodationLoading">
+            Loading accommodation information...
+        </p>
+    </section>
+
+    <section class="content">
+        <h2>📸 Activities</h2>
+
+        <div class="progress-label">
+            <span>Trip progress</span>
+            <span id="progressText">0%</span>
+        </div>
+
+        <div class="progress-bar-container">
+            <div
+                    class="progress-bar"
+                    id="progressBar"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+            ></div>
+        </div>
+
+        <div id="activitiesContainer">
+            <p class="loading-message">
+                Loading London activities...
+            </p>
+        </div>
+    </section>
+
+    <section class="content">
+        <h2>➕ Add Your Own Activity</h2>
+
+        <div class="form-group">
+            <label for="newActivity">
+                Activity name
+            </label>
+
+            <input
+                    id="newActivity"
+                    class="form-control"
+                    type="text"
+                    placeholder="Example: Afternoon tea"
+                    maxlength="100"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="newTicket">
+                Ticket or website link
+            </label>
+
+            <input
+                    id="newTicket"
+                    class="form-control"
+                    type="url"
+                    placeholder="https://..."
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="newInstagram">
+                Instagram link
+            </label>
+
+            <input
+                    id="newInstagram"
+                    class="form-control"
+                    type="url"
+                    placeholder="https://www.instagram.com/..."
+            />
+        </div>
+
+        <button
+                class="primary-button"
+                type="button"
+                onclick="handleAddCustomActivity()"
+        >
+            Add Activity
+        </button>
+
+        <div
+                class="form-message"
+                id="formMessage"
+                aria-live="polite"
+        ></div>
+    </section>
+
+    <nav class="nav-buttons" aria-label="Page navigation">
+        <a
+                class="navigation-button"
+                href="destinations.html"
+        >
+            Back to Destinations
+        </a>
+
+        <a
+                class="navigation-button"
+                href="index.html"
+        >
+            Back to Home
+        </a>
+    </nav>
+
+</main>
+
+<footer>
+    <p>Nanase &amp; Kevin · London 2026</p>
+</footer>
+
+<script type="module">
+    const cityKey = "london";
+
+    let database;
+    let databaseRef;
+    let databaseOnValue;
+    let databaseSet;
+
+    const activitiesContainer =
+        document.getElementById("activitiesContainer");
+
+    const progressBar =
+        document.getElementById("progressBar");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const formMessage =
+        document.getElementById("formMessage");
+
+    const defaultActivities = [
+        {
+            name: "Big Ben and the Houses of Parliament",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Westminster Abbey",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Buckingham Palace",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Tower Bridge",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Tower of London",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "London Eye",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "British Museum",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Borough Market",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Camden Market",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Sky Garden",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "St. Paul's Cathedral",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Hyde Park",
+            ticket: "",
+            instagram: ""
+        }
+    ];
+
+    function waitForFirebase() {
+        return new Promise((resolve) => {
+            if (window.firebaseDB) {
+                resolve();
+                return;
+            }
+
+            window.addEventListener(
+                "firebaseReady",
+                () => resolve(),
+                { once: true }
+            );
+        });
+    }
+
+    async function initializeLondonPage() {
+        await waitForFirebase();
+
+        database = window.firebaseDB;
+        databaseRef = window.firebaseRef;
+        databaseOnValue = window.firebaseOnValue;
+        databaseSet = window.firebaseSet;
+
+        await initializeActivities();
+        loadAccommodations();
+    }
+
+    async function initializeActivities() {
+        const activitiesRef = databaseRef(
+            database,
+            `activities/${cityKey}`
+        );
+
+        databaseOnValue(
+            activitiesRef,
+            async (snapshot) => {
+                let data = normalizeActivityData(snapshot.val());
+
+                if (data.length === 0) {
+                    try {
+                        await databaseSet(
+                            activitiesRef,
+                            defaultActivities
+                        );
+
+                        return;
+                    } catch (error) {
+                        console.error(
+                            "Unable to create default activities:",
+                            error
+                        );
+
+                        data = defaultActivities;
+                    }
+                }
+
+                displayActivities(data);
+            },
+            (error) => {
+                console.error(
+                    "Unable to load activities:",
+                    error
+                );
+
+                activitiesContainer.innerHTML = `
+                    <p class="empty-message">
+                        Activities could not be loaded.
+                    </p>
+                `;
+            }
+        );
+    }
+
+    function normalizeActivityData(rawData) {
+        if (!rawData) {
+            return [];
+        }
+
+        if (Array.isArray(rawData)) {
+            return rawData.filter(Boolean);
+        }
+
+        return Object.values(rawData).filter(Boolean);
+    }
+
+    function displayActivities(activities) {
+        activitiesContainer.innerHTML = "";
+
+        if (activities.length === 0) {
+            activitiesContainer.innerHTML = `
+                <p class="empty-message">
+                    No activities have been added yet.
+                </p>
+            `;
+
+            updateProgress(0);
+            return;
+        }
+
+        activities.forEach((activity, index) => {
+            const storageKey =
+                `${cityKey}_activity_${index}`;
+
+            const activityRow =
+                document.createElement("div");
+
+            activityRow.className = "activity-item";
+
+            const checkbox =
+                document.createElement("input");
+
+            checkbox.type = "checkbox";
+            checkbox.id = storageKey;
+            checkbox.checked =
+                localStorage.getItem(storageKey) === "true";
+
+            checkbox.addEventListener("change", () => {
+                localStorage.setItem(
+                    storageKey,
+                    String(checkbox.checked)
+                );
+
+                updateProgress(activities.length);
+            });
+
+            const label =
+                document.createElement("label");
+
+            label.htmlFor = storageKey;
+            label.textContent =
+                activity.name || "Unnamed activity";
+
+            activityRow.appendChild(checkbox);
+            activityRow.appendChild(label);
+
+            if (isValidWebAddress(activity.ticket)) {
+                const ticketLink =
+                    document.createElement("a");
+
+                ticketLink.href = activity.ticket;
+                ticketLink.target = "_blank";
+                ticketLink.rel = "noopener noreferrer";
+                ticketLink.textContent = "🎫 Tickets";
+
+                activityRow.appendChild(ticketLink);
+            }
+
+            if (isValidWebAddress(activity.instagram)) {
+                const instagramLink =
+                    document.createElement("a");
+
+                instagramLink.href = activity.instagram;
+                instagramLink.target = "_blank";
+                instagramLink.rel = "noopener noreferrer";
+                instagramLink.setAttribute(
+                    "aria-label",
+                    `View Instagram information for ${activity.name}`
+                );
+
+                const instagramImage =
+                    document.createElement("img");
+
+                instagramImage.src =
+                    "./Visuals/instagram_icon.png";
+
+                instagramImage.alt = "Instagram";
+                instagramImage.className =
+                    "instagram-icon";
+
+                instagramLink.appendChild(
+                    instagramImage
+                );
+
+                activityRow.appendChild(
+                    instagramLink
+                );
+            }
+
+            activitiesContainer.appendChild(
+                activityRow
+            );
+        });
+
+        updateProgress(activities.length);
+    }
+
+    function updateProgress(totalActivities) {
+        if (totalActivities === 0) {
+            progressBar.style.width = "0%";
+            progressBar.setAttribute(
+                "aria-valuenow",
+                "0"
+            );
+            progressText.textContent = "0%";
+            return;
+        }
+
+        const completedActivities = [
+            ...activitiesContainer.querySelectorAll(
+                'input[type="checkbox"]'
+            )
+        ].filter((checkbox) => checkbox.checked).length;
+
+        const percentage = Math.round(
+            (completedActivities / totalActivities) * 100
+        );
+
+        progressBar.style.width = `${percentage}%`;
+        progressBar.setAttribute(
+            "aria-valuenow",
+            String(percentage)
+        );
+
+        progressText.textContent =
+            `${percentage}% (${completedActivities}/${totalActivities})`;
+    }
+
+    window.handleAddCustomActivity =
+        async function handleAddCustomActivity() {
+            const activityInput =
+                document.getElementById("newActivity");
+
+            const ticketInput =
+                document.getElementById("newTicket");
+
+            const instagramInput =
+                document.getElementById("newInstagram");
+
+            const name =
+                activityInput.value.trim();
+
+            const ticket =
+                ticketInput.value.trim();
+
+            const instagram =
+                instagramInput.value.trim();
+
+            formMessage.textContent = "";
+
+            if (!name) {
+                formMessage.textContent =
+                    "Please enter an activity name.";
+
+                activityInput.focus();
+                return;
+            }
+
+            if (ticket && !isValidWebAddress(ticket)) {
+                formMessage.textContent =
+                    "Please enter a valid ticket link.";
+
+                ticketInput.focus();
+                return;
+            }
+
+            if (
+                instagram &&
+                !isValidWebAddress(instagram)
+            ) {
+                formMessage.textContent =
+                    "Please enter a valid Instagram link.";
+
+                instagramInput.focus();
+                return;
+            }
+
+            try {
+                const activitiesRef =
+                    databaseRef(
+                        database,
+                        `activities/${cityKey}`
+                    );
+
+                const snapshot =
+                    await readOnce(activitiesRef);
+
+                const currentActivities =
+                    normalizeActivityData(
+                        snapshot.val()
+                    );
+
+                currentActivities.push({
+                    name,
+                    ticket,
+                    instagram
+                });
+
+                await databaseSet(
+                    activitiesRef,
+                    currentActivities
+                );
+
+                activityInput.value = "";
+                ticketInput.value = "";
+                instagramInput.value = "";
+
+                formMessage.textContent =
+                    "Activity added successfully.";
+            } catch (error) {
+                console.error(
+                    "Unable to add activity:",
+                    error
+                );
+
+                formMessage.textContent =
+                    "The activity could not be added.";
+            }
+        };
+
+    function readOnce(reference) {
+        return new Promise((resolve, reject) => {
+            databaseOnValue(
+                reference,
+                resolve,
+                reject,
+                { onlyOnce: true }
+            );
+        });
+    }
+
+    function isValidWebAddress(value) {
+        if (!value) {
+            return false;
+        }
+
+        try {
+            const url = new URL(value);
+
+            return (
+                url.protocol === "http:" ||
+                url.protocol === "https:"
+            );
+        } catch {
+            return false;
+        }
+    }
+
+    async function loadAccommodations() {
+        const accommodationContainer =
+            document.getElementById(
+                "accommodationsContainer"
+            );
+
+        const loadingMessage =
+            document.getElementById(
+                "accommodationLoading"
+            );
+
+        try {
+            const response = await fetch(
+                "./Accommodations/index.json",
+                {
+                    cache: "no-store"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Accommodation file returned ${response.status}`
+                );
+            }
+
+            const accommodationData =
+                await response.json();
+
+            const accommodationList =
+                accommodationData[cityKey] || [];
+
+            loadingMessage?.remove();
+
+            if (accommodationList.length === 0) {
+                accommodationContainer.insertAdjacentHTML(
+                    "beforeend",
+                    `
+                        <p class="empty-message">
+                            Accommodation details have not been added yet.
+                        </p>
+                    `
+                );
+
+                return;
+            }
+
+            accommodationList.forEach(
+                (accommodation) => {
+                    createAccommodationCard(
+                        accommodationContainer,
+                        accommodation
+                    );
+                }
+            );
+        } catch (error) {
+            console.error(
+                "Unable to load accommodations:",
+                error
+            );
+
+            if (loadingMessage) {
+                loadingMessage.textContent =
+                    "Accommodation details have not been added yet.";
+            }
+        }
+    }
+
+    function createAccommodationCard(
+        container,
+        accommodation
+    ) {
+        const card =
+            document.createElement("article");
+
+        card.className = "accommodation-card";
+
+        const title =
+            document.createElement("div");
+
+        title.className = "accommodation-title";
+        title.textContent =
+            accommodation.name ||
+            "London accommodation";
+
+        card.appendChild(title);
+
+        const validImages =
+            Array.isArray(accommodation.images)
+                ? accommodation.images.filter(Boolean)
+                : [];
+
+        if (validImages.length > 0) {
+            const slideshow =
+                document.createElement("div");
+
+            slideshow.className =
+                "slideshow-container";
+
+            validImages.forEach(
+                (imagePath, imageIndex) => {
+                    const slide =
+                        document.createElement("div");
+
+                    slide.className =
+                        imageIndex === 0
+                            ? "slide active"
+                            : "slide";
+
+                    const image =
+                        document.createElement("img");
+
+                    image.src = imagePath;
+                    image.alt =
+                        `${accommodation.name} image ${
+                            imageIndex + 1
+                        }`;
+
+                    slide.appendChild(image);
+                    slideshow.appendChild(slide);
+                }
+            );
+
+            card.appendChild(slideshow);
+
+            if (validImages.length > 1) {
+                startSlideshow(slideshow);
+            }
+        }
+
+        if (
+            isValidWebAddress(
+                accommodation.booking
+            )
+        ) {
+            const bookingLink =
+                document.createElement("a");
+
+            bookingLink.href =
+                accommodation.booking;
+
+            bookingLink.target = "_blank";
+            bookingLink.rel =
+                "noopener noreferrer";
+
+            bookingLink.className =
+                "booking-link";
+
+            bookingLink.textContent =
+                "📄 View Booking";
+
+            card.appendChild(bookingLink);
+        }
+
+        container.appendChild(card);
+    }
+
+    function startSlideshow(slideshow) {
+        let currentSlide = 0;
+
+        setInterval(() => {
+            const slides =
+                slideshow.querySelectorAll(".slide");
+
+            if (slides.length < 2) {
+                return;
+            }
+
+            slides[currentSlide].classList.remove(
+                "active"
+            );
+
+            currentSlide =
+                (currentSlide + 1) % slides.length;
+
+            slides[currentSlide].classList.add(
+                "active"
+            );
+        }, 4000);
+    }
+
+    initializeLondonPage();
+</script>
+
+</body>
+</html>

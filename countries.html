@@ -1,10 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Countries | Europe 2026</title>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet"
+    />
+
+    <style>
+        :root {
+            --primary-colour: #16324f;
+            --secondary-colour: #d4af37;
+            --light-colour: #ffffff;
+            --dark-overlay: rgba(0, 0, 0, 0.58);
+            --button-hover: #244d70;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Montserrat", sans-serif;
+            background:
+                    linear-gradient(
+                            var(--dark-overlay),
+                            var(--dark-overlay)
+                    ),
+                    url("./Visuals/countries.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--light-colour);
+        }
+
+        header {
+            background-color: rgba(22, 50, 79, 0.85);
+            color: var(--light-colour);
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 3px solid var(--secondary-colour);
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            letter-spacing: 4px;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--secondary-colour);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .welcome {
+            width: min(100% - 2rem, 900px);
+            margin: 2rem auto 0;
+            padding: 2rem 1rem;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.48);
+            text-align: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .welcome h2 {
+            margin: 0 0 0.5rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2.2rem;
+            color: var(--secondary-colour);
+        }
+
+        .welcome p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .country-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            width: min(100% - 2rem, 900px);
+            margin: 2rem auto;
+        }
+
+        .country-button {
+            min-height: 170px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 1.25rem;
+            border: 2px solid var(--secondary-colour);
+            border-radius: 14px;
+            background-position: center;
+            background-size: cover;
+            color: var(--light-colour);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+        }
+
+        .country-button::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                    transparent 25%,
+                    rgba(0, 0, 0, 0.88)
+            );
+        }
+
+        .country-button:hover,
+        .country-button:focus {
+            transform: translateY(-5px);
+            box-shadow: 0 9px 24px rgba(0, 0, 0, 0.5);
+            outline: none;
+        }
+
+        .country-button h2 {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .uk {
+            background-image: url("./Visuals/uk.jpg");
+        }
+
+        .france {
+            background-image: url("./Visuals/france.jpg");
+        }
+
+        .portugal {
+            background-image: url("./Visuals/portugal.jpg");
+        }
+
+        .home-navigation {
+            display: flex;
+            justify-content: center;
+            width: min(100% - 2rem, 900px);
+            margin: 0 auto 3rem;
+        }
+
+        .home-button {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            padding: 1rem;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-color: var(--primary-colour);
+            color: var(--light-colour);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            transition:
+                    background-color 0.3s ease,
+                    border-color 0.3s ease,
+                    transform 0.3s ease;
+        }
+
+        .home-button:hover,
+        .home-button:focus {
+            background-color: var(--button-hover);
+            border-color: var(--secondary-colour);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        @media screen and (min-width: 700px) {
+            .country-buttons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .country-button {
+                min-height: 260px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
+<header>
+    <h1>COUNTRIES</h1>
+    <p>Europe 2026</p>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>Our European Adventure</h2>
+        <p>
+            Explore our plans for the United Kingdom, France, and Portugal.
+        </p>
+    </section>
+
+    <section class="country-buttons" aria-label="Countries">
+
+        <a
+                class="country-button uk"
+                href="uk.html"
+                aria-label="View United Kingdom trip details"
+        >
+            <h2>United Kingdom</h2>
+        </a>
+
+        <a
+                class="country-button france"
+                href="france.html"
+                aria-label="View France trip details"
+        >
+            <h2>France</h2>
+        </a>
+
+        <a
+                class="country-button portugal"
+                href="portugal.html"
+                aria-label="View Portugal trip details"
+        >
+            <h2>Portugal</h2>
+        </a>
+
+    </section>
+
+    <nav class="home-navigation" aria-label="Home navigation">
+        <a class="home-button" href="index.html">
+            Back to Home
+        </a>
+    </nav>
+
+</main>
 
 </body>
 </html>
