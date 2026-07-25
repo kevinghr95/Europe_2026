@@ -925,35 +925,39 @@
             checkbox.type = "checkbox";
             checkbox.id = storageKey;
 
-            checkbox.checked =
-                localStorage.getItem(
-                    storageKey
-                ) === "true";
+            const progressReference = ref(
+                database,
+                `progress/${cityKey}/${activity.firebaseKey}`
+            );
 
-            if (checkbox.checked) {
-                activityRow.classList.add(
-                    "completed"
+            onValue(progressReference, (snapshot) => {
+                checkbox.checked = snapshot.val() === true;
+
+                activityRow.classList.toggle(
+                    "completed",
+                    checkbox.checked
                 );
-            }
+
+                updateProgress(activities.length);
+            });
 
             checkbox.addEventListener(
                 "change",
-                () => {
-                    localStorage.setItem(
-                        storageKey,
-                        String(
+                async () => {
+                    try {
+                        await set(
+                            progressReference,
                             checkbox.checked
-                        )
-                    );
+                        );
+                    } catch (error) {
+                        console.error(
+                            "Progress update failed:",
+                            error
+                        );
 
-                    activityRow.classList.toggle(
-                        "completed",
-                        checkbox.checked
-                    );
-
-                    updateProgress(
-                        activities.length
-                    );
+                        checkbox.checked =
+                            !checkbox.checked;
+                    }
                 }
             );
 
