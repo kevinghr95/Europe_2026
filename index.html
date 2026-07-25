@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Europe 2026 - Welcome</title>
+
+    <!-- Main website font -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet"
+    />
+
+    <style>
+        :root {
+            --primary-colour: #16324f;
+            --secondary-colour: #d4af37;
+            --light-colour: #ffffff;
+            --dark-overlay: rgba(0, 0, 0, 0.58);
+            --button-hover: #244d70;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Montserrat", sans-serif;
+            background:
+                    linear-gradient(var(--dark-overlay), var(--dark-overlay)),
+                    url("./Visuals/Main.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--light-colour);
+        }
+
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background-color: rgba(22, 50, 79, 0.82);
+            border-bottom: 3px solid var(--secondary-colour);
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(2.8rem, 8vw, 5rem);
+            letter-spacing: 4px;
+            color: var(--light-colour);
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--secondary-colour);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        main {
+            width: min(100%, 1100px);
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .welcome {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.42);
+            padding: 2rem 1rem;
+            border-radius: 16px;
+            backdrop-filter: blur(3px);
+        }
+
+        .welcome h2 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2.2rem;
+            color: var(--secondary-colour);
+        }
+
+        .welcome p {
+            margin-top: 0;
+            color: #f2f2f2;
+        }
+
+        .bubble-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .traveller {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .bubble {
+            width: 125px;
+            height: 125px;
+            padding: 0;
+            border: 3px solid var(--secondary-colour);
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--light-colour);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            transition:
+                    transform 0.3s ease,
+                    border-radius 0.3s ease,
+                    box-shadow 0.3s ease;
+        }
+
+        .bubble:hover,
+        .bubble:focus,
+        .bubble.active {
+            transform: scale(1.08);
+            border-radius: 18px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+            outline: none;
+        }
+
+        .bubble img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .traveller-name {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--light-colour);
+        }
+
+        .destination-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .destination-section h2 {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2.2rem;
+            color: var(--secondary-colour);
+        }
+
+        .destination-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .destination-card {
+            display: flex;
+            min-height: 170px;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            border: 2px solid rgba(212, 175, 55, 0.75);
+            border-radius: 14px;
+            background-position: center;
+            background-size: cover;
+            color: var(--light-colour);
+            text-decoration: none;
+            overflow: hidden;
+            position: relative;
+            transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+        }
+
+        .destination-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                    transparent,
+                    rgba(0, 0, 0, 0.8)
+            );
+        }
+
+        .destination-card:hover,
+        .destination-card:focus {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            outline: none;
+        }
+
+        .destination-card h3 {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+        }
+
+        .london {
+            background-image: url("./Visuals/london.jpg");
+        }
+
+        .paris {
+            background-image: url("./Visuals/paris.jpg");
+        }
+
+        .portugal {
+            background-image: url("./Visuals/portugal.jpg");
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .nav-button {
+            display: block;
+            padding: 1rem;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-color: var(--primary-colour);
+            color: var(--light-colour);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            transition:
+                    background-color 0.3s ease,
+                    border-color 0.3s ease,
+                    transform 0.3s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button:focus {
+            background-color: var(--button-hover);
+            border-color: var(--secondary-colour);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        footer {
+            padding: 1.5rem 1rem;
+            background-color: rgba(22, 50, 79, 0.88);
+            border-top: 2px solid var(--secondary-colour);
+            text-align: center;
+            color: #eeeeee;
+            font-size: 0.9rem;
+        }
+
+        @media screen and (min-width: 650px) {
+            .destination-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .nav-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bubble {
+                width: 145px;
+                height: 145px;
+            }
+        }
+
+        @media screen and (min-width: 900px) {
+            .nav-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>EUROPE 2026</h1>
+    <p>London · Paris · Portugal</p>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>The Travellers</h2>
+        <p>Another adventure begins.</p>
+
+        <div class="bubble-container">
+
+            <div class="traveller">
+                <button
+                        class="bubble"
+                        type="button"
+                        onclick="toggleBubble(this)"
+                        aria-label="Select Nanase"
+                >
+                    <img
+                            src="./Visuals/nanase.png"
+                            alt="Nanase"
+                    />
+                </button>
+
+                <p class="traveller-name">Nanase</p>
+            </div>
+
+            <div class="traveller">
+                <button
+                        class="bubble"
+                        type="button"
+                        onclick="toggleBubble(this)"
+                        aria-label="Select Kevin"
+                >
+                    <img
+                            src="./Visuals/kevin.png"
+                            alt="Kevin"
+                    />
+                </button>
+
+                <p class="traveller-name">Kevin</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="destination-section">
+        <h2>Our Destinations</h2>
+
+        <div class="destination-cards">
+
+            <a
+                    class="destination-card london"
+                    href="london.html"
+                    aria-label="View London trip information"
+            >
+                <h3>London</h3>
+            </a>
+
+            <a
+                    class="destination-card paris"
+                    href="paris.html"
+                    aria-label="View Paris trip information"
+            >
+                <h3>Paris</h3>
+            </a>
+
+            <a
+                    class="destination-card portugal"
+                    href="portugal.html"
+                    aria-label="View Portugal trip information"
+            >
+                <h3>Portugal</h3>
+            </a>
+
+        </div>
+    </section>
+
+    <nav class="nav-buttons" aria-label="Main navigation">
+        <a class="nav-button" href="cities.html">
+            Destinations
+        </a>
+
+        <a class="nav-button" href="schedule.html">
+            Schedule
+        </a>
+
+        <a class="nav-button" href="transportation.html">
+            Transportation
+        </a>
+
+        <a class="nav-button" href="upload.html">
+            Upload Photos
+        </a>
+    </nav>
+
+</main>
+
+<footer>
+    <p>Nanase &amp; Kevin · Europe 2026</p>
+</footer>
+
+<script>
+    function toggleBubble(selectedBubble) {
+        const bubbles = document.querySelectorAll(".bubble");
+
+        bubbles.forEach((bubble) => {
+            bubble.classList.remove("active");
+        });
+
+        selectedBubble.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
