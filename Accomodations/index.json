@@ -4,8 +4,8 @@
       "name": "London Accommodation",
       "booking": "",
       "images": [
-        "./Accommodations/London/london-room-1.jpg",
-        "./Accommodations/London/london-room-2.jpg",
+        "./Accommodations/London/london-room-1.webp",
+        "./Accommodations/London/london-room-2.webp",
         "./Accommodations/London/london-room-3.jpg"
       ]
     }
