@@ -713,7 +713,12 @@
             "connected"
         );
 
-        await initializeActivities();
+        await Promise.all([
+            initializeActivities(),
+            initializeAccommodations()
+        ]);
+
+
     } catch (error) {
         console.error(
             "Firebase initialization failed:",
@@ -733,8 +738,6 @@
 
         addActivityButton.disabled = true;
     }
-
-    loadAccommodations();
 
     /*
     =====================================================
@@ -1268,12 +1271,12 @@
     }
 
     /*
-    =====================================================
-    ACCOMMODATIONS
-    =====================================================
-    */
+  =====================================================
+  FIREBASE ACCOMMODATIONS
+  =====================================================
+  */
 
-    async function loadAccommodations() {
+    async function initializeAccommodations() {
         const accommodationContainer =
             document.getElementById(
                 "accommodationsContainer"
@@ -1284,65 +1287,182 @@
                 "accommodationLoading"
             );
 
-        try {
-            const response = await fetch(
-                "./Accommodations/index.json",
-                {
-                    cache: "no-store"
-                }
+        const accommodationsReference =
+            ref(
+                database,
+                `accommodations/${cityKey}`
             );
 
-            if (!response.ok) {
-                throw new Error(
-                    `Accommodation file returned ${response.status}`
+        try {
+            const initialSnapshot =
+                await get(accommodationsReference);
+
+            /*
+            Create a sample accommodation only when the
+            London accommodation path is empty.
+            */
+
+            if (!initialSnapshot.exists()) {
+                await set(
+                    ref(
+                        database,
+                        `accommodations/${cityKey}/accommodation_1`
+                    ),
+                    {
+                        name: "London Accommodation",
+
+                        booking: "",
+
+                        images: {
+                            image_1:
+                                "./Accommodations/London/london-room-1.jpg",
+
+                            image_2:
+                                "./Accommodations/London/london-room-2.jpg",
+
+                            image_3:
+                                "./Accommodations/London/london-room-3.jpg"
+                        }
+                    }
                 );
             }
 
-            const accommodationData =
-                await response.json();
+            /*
+            Listen continuously for accommodation changes.
+            */
 
-            const accommodationList =
-                accommodationData[
-                    cityKey
-                    ] || [];
+            onValue(
+                accommodationsReference,
 
-            loadingMessage?.remove();
+                (snapshot) => {
+                    const accommodations =
+                        normalizeAccommodations(
+                            snapshot.val()
+                        );
 
-            if (
-                accommodationList.length === 0
-            ) {
-                accommodationContainer
-                    .insertAdjacentHTML(
-                        "beforeend",
-                        `
-                            <p class="empty-message">
-                                Accommodation details have not been added yet.
-                            </p>
-                        `
+                    displayAccommodations(
+                        accommodations
+                    );
+                },
+
+                (error) => {
+                    console.error(
+                        "Accommodation read failed:",
+                        error
                     );
 
-                return;
-            }
-
-            accommodationList.forEach(
-                (accommodation) => {
-                    createAccommodationCard(
-                        accommodationContainer,
-                        accommodation
-                    );
+                    if (loadingMessage) {
+                        loadingMessage.textContent =
+                            "Accommodation information could not be loaded.";
+                    }
                 }
             );
         } catch (error) {
             console.error(
-                "Accommodation loading failed:",
+                "Accommodation initialization failed:",
                 error
             );
 
             if (loadingMessage) {
                 loadingMessage.textContent =
-                    "Accommodation details have not been added yet.";
+                    "Accommodation information could not be initialized.";
             }
         }
+    }
+
+    /*
+    =====================================================
+    NORMALIZE ACCOMMODATION DATA
+    =====================================================
+    */
+
+    function normalizeAccommodations(rawData) {
+        if (!rawData) {
+            return [];
+        }
+
+        return Object.entries(rawData)
+            .filter(
+                ([, accommodation]) =>
+                    accommodation &&
+                    typeof accommodation === "object"
+            )
+            .map(
+                ([firebaseKey, accommodation]) => ({
+                    firebaseKey,
+
+                    name:
+                        accommodation.name ||
+                        "London accommodation",
+
+                    booking:
+                        accommodation.booking || "",
+
+                    images:
+                        normalizeImages(
+                            accommodation.images
+                        )
+                })
+            );
+    }
+
+    function normalizeImages(rawImages) {
+        if (!rawImages) {
+            return [];
+        }
+
+        if (Array.isArray(rawImages)) {
+            return rawImages.filter(Boolean);
+        }
+
+        return Object.values(rawImages)
+            .filter(Boolean);
+    }
+
+    /*
+    =====================================================
+    DISPLAY ACCOMMODATIONS
+    =====================================================
+    */
+
+    function displayAccommodations(
+        accommodations
+    ) {
+        const accommodationContainer =
+            document.getElementById(
+                "accommodationsContainer"
+            );
+
+        /*
+        Preserve the section heading while replacing
+        previously displayed accommodation cards.
+        */
+
+        accommodationContainer.innerHTML = `
+        <h2>🏨 Where We Are Staying</h2>
+    `;
+
+        if (accommodations.length === 0) {
+            accommodationContainer.insertAdjacentHTML(
+                "beforeend",
+                `
+                <p class="empty-message">
+                    Accommodation details have not been added yet.
+                </p>
+            `
+            );
+
+            return;
+        }
+
+        accommodations.forEach(
+            (accommodation) => {
+                createAccommodationCard(
+                    accommodationContainer,
+                    accommodation
+                );
+            }
+        );
     }
 
     function createAccommodationCard(
@@ -1362,35 +1482,21 @@
             "accommodation-title";
 
         title.textContent =
-            accommodation.name ||
-            "London accommodation";
+            accommodation.name;
 
         card.appendChild(title);
 
-        const images =
-            Array.isArray(
-                accommodation.images
-            )
-                ? accommodation.images
-                    .filter(Boolean)
-                : [];
-
-        if (images.length > 0) {
+        if (accommodation.images.length > 0) {
             const slideshow =
                 document.createElement("div");
 
             slideshow.className =
                 "slideshow-container";
 
-            images.forEach(
-                (
-                    imagePath,
-                    imageIndex
-                ) => {
+            accommodation.images.forEach(
+                (imagePath, imageIndex) => {
                     const slide =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     slide.className =
                         imageIndex === 0
@@ -1398,31 +1504,29 @@
                             : "slide";
 
                     const image =
-                        document.createElement(
-                            "img"
-                        );
+                        document.createElement("img");
 
                     image.src = imagePath;
 
                     image.alt =
-                        `${accommodation.name || "Accommodation"} image ${imageIndex + 1}`;
+                        `${accommodation.name} image ${
+                            imageIndex + 1
+                        }`;
+
+                    image.loading = "lazy";
 
                     slide.appendChild(image);
 
-                    slideshow.appendChild(
-                        slide
-                    );
+                    slideshow.appendChild(slide);
                 }
             );
 
-            card.appendChild(
-                slideshow
-            );
+            card.appendChild(slideshow);
 
-            if (images.length > 1) {
-                startSlideshow(
-                    slideshow
-                );
+            if (
+                accommodation.images.length > 1
+            ) {
+                startSlideshow(slideshow);
             }
         }
 
@@ -1457,6 +1561,12 @@
         container.appendChild(card);
     }
 
+    /*
+    =====================================================
+    ACCOMMODATION SLIDESHOW
+    =====================================================
+    */
+
     function startSlideshow(slideshow) {
         let currentSlide = 0;
 
@@ -1471,9 +1581,7 @@
             }
 
             slides[currentSlide]
-                .classList.remove(
-                "active"
-            );
+                .classList.remove("active");
 
             currentSlide =
                 (
@@ -1481,9 +1589,7 @@
                 ) % slides.length;
 
             slides[currentSlide]
-                .classList.add(
-                "active"
-            );
+                .classList.add("active");
         }, 4000);
     }
 </script>
