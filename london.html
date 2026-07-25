@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
     />
-    <meta name="format-detection" content="telephone=no" />
+
+    <meta
+            name="format-detection"
+            content="telephone=no"
+    />
 
     <title>London | Europe 2026</title>
 
@@ -14,41 +19,6 @@
             href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
             rel="stylesheet"
     />
-
-    <!-- Firebase -->
-    <script type="module">
-        import {
-            initializeApp
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-        import {
-            getDatabase,
-            ref,
-            onValue,
-            set
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBtuWWeL1zCTuNHa1ft6EUbn_Esyxn2nUs",
-            authDomain: "japan-2025-36f45.firebaseapp.com",
-            projectId: "japan-2025-36f45",
-            storageBucket: "japan-2025-36f45.appspot.com",
-            messagingSenderId: "985861478220",
-            appId: "1:985861478220:web:56888dc3fd9340b35321e9",
-            databaseURL:
-                "https://japan-2025-36f45-default-rtdb.firebaseio.com"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        window.firebaseDB = database;
-        window.firebaseRef = ref;
-        window.firebaseOnValue = onValue;
-        window.firebaseSet = set;
-
-        window.dispatchEvent(new Event("firebaseReady"));
-    </script>
 
     <style>
         :root {
@@ -59,6 +29,7 @@
             --light-grey: #eeeeee;
             --dark-overlay: rgba(0, 0, 0, 0.64);
             --card-background: rgba(255, 255, 255, 0.1);
+            --danger: #ffb3b3;
         }
 
         * {
@@ -73,12 +44,15 @@
             min-height: 100vh;
             margin: 0;
             font-family: "Montserrat", sans-serif;
+
             background:
                     linear-gradient(
                             var(--dark-overlay),
                             var(--dark-overlay)
                     ),
-                    url("./Visuals/london.jpg") no-repeat center center fixed;
+                    url("./Visuals/london.jpg")
+                    no-repeat center center fixed;
+
             background-size: cover;
             color: var(--white);
         }
@@ -134,6 +108,37 @@
         .content p {
             line-height: 1.7;
         }
+
+        /* Firebase status */
+
+        .database-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            padding: 0.7rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #cccccc;
+        }
+
+        .status-dot.connected {
+            background: #4bd66a;
+        }
+
+        .status-dot.error {
+            background: #ff5757;
+        }
+
+        /* Accommodations */
 
         .accommodation-card {
             margin-top: 1rem;
@@ -193,15 +198,17 @@
             text-decoration: underline;
         }
 
+        /* Activities */
+
         .activity-item {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.45rem;
+            gap: 0.55rem;
             margin: 0.8rem 0;
-            padding: 0.7rem;
+            padding: 0.8rem;
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.06);
+            background-color: rgba(255, 255, 255, 0.07);
         }
 
         .activity-item input[type="checkbox"] {
@@ -218,14 +225,19 @@
             cursor: pointer;
         }
 
-        .activity-item a {
+        .activity-item.completed label {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .activity-link {
             color: var(--gold);
             font-weight: 600;
             text-decoration: none;
         }
 
-        .activity-item a:hover,
-        .activity-item a:focus {
+        .activity-link:hover,
+        .activity-link:focus {
             text-decoration: underline;
         }
 
@@ -235,6 +247,8 @@
             height: 22px;
             vertical-align: middle;
         }
+
+        /* Progress bar */
 
         .progress-label {
             display: flex;
@@ -261,8 +275,10 @@
             transition: width 0.35s ease;
         }
 
+        /* Form */
+
         .form-group {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.9rem;
         }
 
         .form-group label {
@@ -298,6 +314,7 @@
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
+
             transition:
                     background-color 0.3s ease,
                     border-color 0.3s ease,
@@ -314,12 +331,30 @@
             outline: none;
         }
 
+        .primary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .form-message {
             min-height: 1.2rem;
             margin-top: 0.7rem;
             color: var(--gold);
             font-size: 0.9rem;
         }
+
+        .form-message.error {
+            color: var(--danger);
+        }
+
+        .loading-message,
+        .empty-message {
+            color: #dddddd;
+            font-style: italic;
+        }
+
+        /* Navigation */
 
         .nav-buttons {
             display: flex;
@@ -328,12 +363,6 @@
             gap: 1rem;
             margin-top: 2rem;
             text-align: center;
-        }
-
-        .loading-message,
-        .empty-message {
-            color: #dddddd;
-            font-style: italic;
         }
 
         footer {
@@ -390,16 +419,33 @@
         </p>
     </section>
 
-    <section class="content" id="accommodationsContainer">
+    <section
+            class="content"
+            id="accommodationsContainer"
+    >
         <h2>🏨 Where We Are Staying</h2>
 
-        <p class="loading-message" id="accommodationLoading">
+        <p
+                class="loading-message"
+                id="accommodationLoading"
+        >
             Loading accommodation information...
         </p>
     </section>
 
     <section class="content">
         <h2>📸 Activities</h2>
+
+        <div class="database-status">
+            <span
+                    class="status-dot"
+                    id="statusDot"
+            ></span>
+
+            <span id="databaseStatus">
+                Connecting to Europe 2026 Firebase...
+            </span>
+        </div>
 
         <div class="progress-label">
             <span>Trip progress</span>
@@ -469,8 +515,8 @@
 
         <button
                 class="primary-button"
+                id="addActivityButton"
                 type="button"
-                onclick="handleAddCustomActivity()"
         >
             Add Activity
         </button>
@@ -482,12 +528,15 @@
         ></div>
     </section>
 
-    <nav class="nav-buttons" aria-label="Page navigation">
+    <nav
+            class="nav-buttons"
+            aria-label="Page navigation"
+    >
         <a
                 class="navigation-button"
-                href="countries.html"
+                href="destinations.html"
         >
-            Back to Countries
+            Back to Destinations
         </a>
 
         <a
@@ -505,24 +554,65 @@
 </footer>
 
 <script type="module">
+    /*
+    =====================================================
+    FIREBASE IMPORTS
+    =====================================================
+    */
+
+    import {
+        initializeApp
+    } from
+            "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+    import {
+        getDatabase,
+        ref,
+        get,
+        onValue,
+        set,
+        push
+    } from
+            "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+    /*
+    =====================================================
+    FIREBASE CONFIGURATION
+
+    Replace the placeholder values with the information
+    from your Europe-2026 Firebase project.
+    =====================================================
+    */
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCVDAtuCmkcJuCtyeXe_obac5Tbncm153o",
+
+        authDomain:
+            "europe-2026-19fae.firebaseapp.com",
+
+        databaseURL:
+            "https://europe-2026-19fae-default-rtdb.firebaseio.com",
+
+        projectId:
+            "europe-2026-19fae",
+
+        storageBucket:
+            "europe-2026-19fae.firebasestorage.app",
+
+        messagingSenderId:
+            "948447102106",
+
+        appId:
+            "1:948447102106:web:c05db2fe8750d7a9410b23"
+    };
+
+    /*
+    =====================================================
+    PAGE SETTINGS
+    =====================================================
+    */
+
     const cityKey = "london";
-
-    let database;
-    let databaseRef;
-    let databaseOnValue;
-    let databaseSet;
-
-    const activitiesContainer =
-        document.getElementById("activitiesContainer");
-
-    const progressBar =
-        document.getElementById("progressBar");
-
-    const progressText =
-        document.getElementById("progressText");
-
-    const formMessage =
-        document.getElementById("formMessage");
 
     const defaultActivities = [
         {
@@ -559,94 +649,248 @@
             name: "British Museum",
             ticket: "",
             instagram: ""
-        },
-
+        }
     ];
 
-    function waitForFirebase() {
-        return new Promise((resolve) => {
-            if (window.firebaseDB) {
-                resolve();
-                return;
-            }
+    /*
+    =====================================================
+    PAGE ELEMENTS
+    =====================================================
+    */
 
-            window.addEventListener(
-                "firebaseReady",
-                () => resolve(),
-                { once: true }
-            );
-        });
-    }
+    const activitiesContainer =
+        document.getElementById(
+            "activitiesContainer"
+        );
 
-    async function initializeLondonPage() {
-        await waitForFirebase();
+    const progressBar =
+        document.getElementById(
+            "progressBar"
+        );
 
-        database = window.firebaseDB;
-        databaseRef = window.firebaseRef;
-        databaseOnValue = window.firebaseOnValue;
-        databaseSet = window.firebaseSet;
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+    const formMessage =
+        document.getElementById(
+            "formMessage"
+        );
+
+    const addActivityButton =
+        document.getElementById(
+            "addActivityButton"
+        );
+
+    const databaseStatus =
+        document.getElementById(
+            "databaseStatus"
+        );
+
+    const statusDot =
+        document.getElementById(
+            "statusDot"
+        );
+
+    /*
+    =====================================================
+    FIREBASE INITIALIZATION
+    =====================================================
+    */
+
+    let database;
+
+    try {
+        const firebaseApp =
+            initializeApp(firebaseConfig);
+
+        database =
+            getDatabase(firebaseApp);
+
+        setDatabaseStatus(
+            "Connected to Europe 2026 Firebase.",
+            "connected"
+        );
 
         await initializeActivities();
-        loadAccommodations();
+    } catch (error) {
+        console.error(
+            "Firebase initialization failed:",
+            error
+        );
+
+        setDatabaseStatus(
+            "Firebase could not connect. Check your configuration.",
+            "error"
+        );
+
+        activitiesContainer.innerHTML = `
+            <p class="empty-message">
+                Activities could not be loaded.
+            </p>
+        `;
+
+        addActivityButton.disabled = true;
     }
+
+    loadAccommodations();
+
+    /*
+    =====================================================
+    FIREBASE STATUS
+    =====================================================
+    */
+
+    function setDatabaseStatus(
+        message,
+        status
+    ) {
+        databaseStatus.textContent = message;
+
+        statusDot.classList.remove(
+            "connected",
+            "error"
+        );
+
+        if (status) {
+            statusDot.classList.add(status);
+        }
+    }
+
+    /*
+    =====================================================
+    ACTIVITY INITIALIZATION
+    =====================================================
+    */
 
     async function initializeActivities() {
-        const activitiesRef = databaseRef(
-            database,
-            `activities/${cityKey}`
-        );
+        const activitiesReference =
+            ref(
+                database,
+                `activities/${cityKey}`
+            );
 
-        databaseOnValue(
-            activitiesRef,
-            async (snapshot) => {
-                let data = normalizeActivityData(snapshot.val());
+        try {
+            const initialSnapshot =
+                await get(activitiesReference);
 
-                if (data.length === 0) {
-                    try {
-                        await databaseSet(
-                            activitiesRef,
-                            defaultActivities
-                        );
+            /*
+            Create default activities only when the
+            London activity path does not exist.
+            */
 
-                        return;
-                    } catch (error) {
-                        console.error(
-                            "Unable to create default activities:",
-                            error
-                        );
+            if (!initialSnapshot.exists()) {
+                const initialData = {};
 
-                        data = defaultActivities;
+                defaultActivities.forEach(
+                    (activity, index) => {
+                        initialData[
+                            `activity_${index + 1}`
+                            ] = activity;
                     }
-                }
-
-                displayActivities(data);
-            },
-            (error) => {
-                console.error(
-                    "Unable to load activities:",
-                    error
                 );
 
-                activitiesContainer.innerHTML = `
-                    <p class="empty-message">
-                        Activities could not be loaded.
-                    </p>
-                `;
+                await set(
+                    activitiesReference,
+                    initialData
+                );
             }
-        );
+
+            /*
+            Listen continuously for changes.
+            */
+
+            onValue(
+                activitiesReference,
+                (snapshot) => {
+                    const activities =
+                        normalizeActivities(
+                            snapshot.val()
+                        );
+
+                    displayActivities(
+                        activities
+                    );
+
+                    setDatabaseStatus(
+                        "Connected to Europe 2026 Firebase.",
+                        "connected"
+                    );
+                },
+                (error) => {
+                    console.error(
+                        "Realtime Database read failed:",
+                        error
+                    );
+
+                    setDatabaseStatus(
+                        "Firebase denied access. Check the database rules.",
+                        "error"
+                    );
+
+                    activitiesContainer.innerHTML = `
+                        <p class="empty-message">
+                            Activities could not be loaded.
+                        </p>
+                    `;
+                }
+            );
+        } catch (error) {
+            console.error(
+                "Activity initialization failed:",
+                error
+            );
+
+            setDatabaseStatus(
+                "Activities could not be initialized.",
+                "error"
+            );
+
+            activitiesContainer.innerHTML = `
+                <p class="empty-message">
+                    The London database could not be reached.
+                </p>
+            `;
+        }
     }
 
-    function normalizeActivityData(rawData) {
+    /*
+    =====================================================
+    NORMALIZE FIREBASE DATA
+    =====================================================
+    */
+
+    function normalizeActivities(rawData) {
         if (!rawData) {
             return [];
         }
 
-        if (Array.isArray(rawData)) {
-            return rawData.filter(Boolean);
-        }
-
-        return Object.values(rawData).filter(Boolean);
+        return Object.entries(rawData)
+            .filter(
+                ([, activity]) =>
+                    activity &&
+                    typeof activity === "object"
+            )
+            .map(
+                ([firebaseKey, activity]) => ({
+                    firebaseKey,
+                    name:
+                        activity.name ||
+                        "Unnamed activity",
+                    ticket:
+                        activity.ticket || "",
+                    instagram:
+                        activity.instagram || ""
+                })
+            );
     }
+
+    /*
+    =====================================================
+    DISPLAY ACTIVITIES
+    =====================================================
+    */
 
     function displayActivities(activities) {
         activitiesContainer.innerHTML = "";
@@ -662,61 +906,113 @@
             return;
         }
 
-        activities.forEach((activity, index) => {
+        activities.forEach((activity) => {
             const storageKey =
-                `${cityKey}_activity_${index}`;
+                `${cityKey}_${activity.firebaseKey}`;
 
             const activityRow =
                 document.createElement("div");
 
-            activityRow.className = "activity-item";
+            activityRow.className =
+                "activity-item";
 
             const checkbox =
                 document.createElement("input");
 
             checkbox.type = "checkbox";
             checkbox.id = storageKey;
+
             checkbox.checked =
-                localStorage.getItem(storageKey) === "true";
+                localStorage.getItem(
+                    storageKey
+                ) === "true";
 
-            checkbox.addEventListener("change", () => {
-                localStorage.setItem(
-                    storageKey,
-                    String(checkbox.checked)
+            if (checkbox.checked) {
+                activityRow.classList.add(
+                    "completed"
                 );
+            }
 
-                updateProgress(activities.length);
-            });
+            checkbox.addEventListener(
+                "change",
+                () => {
+                    localStorage.setItem(
+                        storageKey,
+                        String(
+                            checkbox.checked
+                        )
+                    );
+
+                    activityRow.classList.toggle(
+                        "completed",
+                        checkbox.checked
+                    );
+
+                    updateProgress(
+                        activities.length
+                    );
+                }
+            );
 
             const label =
                 document.createElement("label");
 
             label.htmlFor = storageKey;
-            label.textContent =
-                activity.name || "Unnamed activity";
+            label.textContent = activity.name;
 
-            activityRow.appendChild(checkbox);
-            activityRow.appendChild(label);
+            activityRow.appendChild(
+                checkbox
+            );
 
-            if (isValidWebAddress(activity.ticket)) {
+            activityRow.appendChild(
+                label
+            );
+
+            if (
+                isValidWebAddress(
+                    activity.ticket
+                )
+            ) {
                 const ticketLink =
                     document.createElement("a");
 
-                ticketLink.href = activity.ticket;
-                ticketLink.target = "_blank";
-                ticketLink.rel = "noopener noreferrer";
-                ticketLink.textContent = "🎫 Tickets";
+                ticketLink.href =
+                    activity.ticket;
 
-                activityRow.appendChild(ticketLink);
+                ticketLink.target =
+                    "_blank";
+
+                ticketLink.rel =
+                    "noopener noreferrer";
+
+                ticketLink.className =
+                    "activity-link";
+
+                ticketLink.textContent =
+                    "🎫 Tickets";
+
+                activityRow.appendChild(
+                    ticketLink
+                );
             }
 
-            if (isValidWebAddress(activity.instagram)) {
+            if (
+                isValidWebAddress(
+                    activity.instagram
+                )
+            ) {
                 const instagramLink =
                     document.createElement("a");
 
-                instagramLink.href = activity.instagram;
-                instagramLink.target = "_blank";
-                instagramLink.rel = "noopener noreferrer";
+                instagramLink.href =
+                    activity.instagram;
+
+                instagramLink.target =
+                    "_blank";
+
+                instagramLink.rel =
+                    "noopener noreferrer";
+
                 instagramLink.setAttribute(
                     "aria-label",
                     `View Instagram information for ${activity.name}`
@@ -728,7 +1024,9 @@
                 instagramImage.src =
                     "./Visuals/instagram_icon.png";
 
-                instagramImage.alt = "Instagram";
+                instagramImage.alt =
+                    "Instagram";
+
                 instagramImage.className =
                     "instagram-icon";
 
@@ -746,31 +1044,54 @@
             );
         });
 
-        updateProgress(activities.length);
+        updateProgress(
+            activities.length
+        );
     }
+
+    /*
+    =====================================================
+    PROGRESS BAR
+    =====================================================
+    */
 
     function updateProgress(totalActivities) {
         if (totalActivities === 0) {
-            progressBar.style.width = "0%";
+            progressBar.style.width =
+                "0%";
+
             progressBar.setAttribute(
                 "aria-valuenow",
                 "0"
             );
-            progressText.textContent = "0%";
+
+            progressText.textContent =
+                "0%";
+
             return;
         }
 
         const completedActivities = [
-            ...activitiesContainer.querySelectorAll(
-                'input[type="checkbox"]'
-            )
-        ].filter((checkbox) => checkbox.checked).length;
+            ...activitiesContainer
+                .querySelectorAll(
+                    'input[type="checkbox"]'
+                )
+        ].filter(
+            (checkbox) =>
+                checkbox.checked
+        ).length;
 
-        const percentage = Math.round(
-            (completedActivities / totalActivities) * 100
-        );
+        const percentage =
+            Math.round(
+                (
+                    completedActivities /
+                    totalActivities
+                ) * 100
+            );
 
-        progressBar.style.width = `${percentage}%`;
+        progressBar.style.width =
+            `${percentage}%`;
+
         progressBar.setAttribute(
             "aria-valuenow",
             String(percentage)
@@ -780,108 +1101,154 @@
             `${percentage}% (${completedActivities}/${totalActivities})`;
     }
 
-    window.handleAddCustomActivity =
-        async function handleAddCustomActivity() {
-            const activityInput =
-                document.getElementById("newActivity");
+    /*
+    =====================================================
+    ADD A NEW ACTIVITY
+    =====================================================
+    */
 
-            const ticketInput =
-                document.getElementById("newTicket");
+    addActivityButton.addEventListener(
+        "click",
+        handleAddCustomActivity
+    );
 
-            const instagramInput =
-                document.getElementById("newInstagram");
+    async function handleAddCustomActivity() {
+        const activityInput =
+            document.getElementById(
+                "newActivity"
+            );
 
-            const name =
-                activityInput.value.trim();
+        const ticketInput =
+            document.getElementById(
+                "newTicket"
+            );
 
-            const ticket =
-                ticketInput.value.trim();
+        const instagramInput =
+            document.getElementById(
+                "newInstagram"
+            );
 
-            const instagram =
-                instagramInput.value.trim();
+        const name =
+            activityInput.value.trim();
 
-            formMessage.textContent = "";
+        const ticket =
+            ticketInput.value.trim();
 
-            if (!name) {
-                formMessage.textContent =
-                    "Please enter an activity name.";
+        const instagram =
+            instagramInput.value.trim();
 
-                activityInput.focus();
-                return;
-            }
+        clearFormMessage();
 
-            if (ticket && !isValidWebAddress(ticket)) {
-                formMessage.textContent =
-                    "Please enter a valid ticket link.";
+        if (!name) {
+            showFormMessage(
+                "Please enter an activity name.",
+                true
+            );
 
-                ticketInput.focus();
-                return;
-            }
+            activityInput.focus();
+            return;
+        }
 
-            if (
-                instagram &&
-                !isValidWebAddress(instagram)
-            ) {
-                formMessage.textContent =
-                    "Please enter a valid Instagram link.";
+        if (
+            ticket &&
+            !isValidWebAddress(ticket)
+        ) {
+            showFormMessage(
+                "Please enter a valid ticket or website link.",
+                true
+            );
 
-                instagramInput.focus();
-                return;
-            }
+            ticketInput.focus();
+            return;
+        }
 
-            try {
-                const activitiesRef =
-                    databaseRef(
-                        database,
-                        `activities/${cityKey}`
-                    );
+        if (
+            instagram &&
+            !isValidWebAddress(instagram)
+        ) {
+            showFormMessage(
+                "Please enter a valid Instagram link.",
+                true
+            );
 
-                const snapshot =
-                    await readOnce(activitiesRef);
+            instagramInput.focus();
+            return;
+        }
 
-                const currentActivities =
-                    normalizeActivityData(
-                        snapshot.val()
-                    );
+        addActivityButton.disabled = true;
+        addActivityButton.textContent =
+            "Adding...";
 
-                currentActivities.push({
+        try {
+            const activitiesReference =
+                ref(
+                    database,
+                    `activities/${cityKey}`
+                );
+
+            await push(
+                activitiesReference,
+                {
                     name,
                     ticket,
-                    instagram
-                });
-
-                await databaseSet(
-                    activitiesRef,
-                    currentActivities
-                );
-
-                activityInput.value = "";
-                ticketInput.value = "";
-                instagramInput.value = "";
-
-                formMessage.textContent =
-                    "Activity added successfully.";
-            } catch (error) {
-                console.error(
-                    "Unable to add activity:",
-                    error
-                );
-
-                formMessage.textContent =
-                    "The activity could not be added.";
-            }
-        };
-
-    function readOnce(reference) {
-        return new Promise((resolve, reject) => {
-            databaseOnValue(
-                reference,
-                resolve,
-                reject,
-                { onlyOnce: true }
+                    instagram,
+                    createdAt:
+                        new Date().toISOString()
+                }
             );
-        });
+
+            activityInput.value = "";
+            ticketInput.value = "";
+            instagramInput.value = "";
+
+            showFormMessage(
+                "Activity added successfully."
+            );
+        } catch (error) {
+            console.error(
+                "Activity write failed:",
+                error
+            );
+
+            showFormMessage(
+                "The activity could not be added. Check your Firebase rules.",
+                true
+            );
+        } finally {
+            addActivityButton.disabled =
+                false;
+
+            addActivityButton.textContent =
+                "Add Activity";
+        }
     }
+
+    function clearFormMessage() {
+        formMessage.textContent = "";
+
+        formMessage.classList.remove(
+            "error"
+        );
+    }
+
+    function showFormMessage(
+        message,
+        isError = false
+    ) {
+        formMessage.textContent =
+            message;
+
+        formMessage.classList.toggle(
+            "error",
+            isError
+        );
+    }
+
+    /*
+    =====================================================
+    URL VALIDATION
+    =====================================================
+    */
 
     function isValidWebAddress(value) {
         if (!value) {
@@ -899,6 +1266,12 @@
             return false;
         }
     }
+
+    /*
+    =====================================================
+    ACCOMMODATIONS
+    =====================================================
+    */
 
     async function loadAccommodations() {
         const accommodationContainer =
@@ -929,19 +1302,24 @@
                 await response.json();
 
             const accommodationList =
-                accommodationData[cityKey] || [];
+                accommodationData[
+                    cityKey
+                    ] || [];
 
             loadingMessage?.remove();
 
-            if (accommodationList.length === 0) {
-                accommodationContainer.insertAdjacentHTML(
-                    "beforeend",
-                    `
-                        <p class="empty-message">
-                            Accommodation details have not been added yet.
-                        </p>
-                    `
-                );
+            if (
+                accommodationList.length === 0
+            ) {
+                accommodationContainer
+                    .insertAdjacentHTML(
+                        "beforeend",
+                        `
+                            <p class="empty-message">
+                                Accommodation details have not been added yet.
+                            </p>
+                        `
+                    );
 
                 return;
             }
@@ -956,7 +1334,7 @@
             );
         } catch (error) {
             console.error(
-                "Unable to load accommodations:",
+                "Accommodation loading failed:",
                 error
             );
 
@@ -974,34 +1352,45 @@
         const card =
             document.createElement("article");
 
-        card.className = "accommodation-card";
+        card.className =
+            "accommodation-card";
 
         const title =
             document.createElement("div");
 
-        title.className = "accommodation-title";
+        title.className =
+            "accommodation-title";
+
         title.textContent =
             accommodation.name ||
             "London accommodation";
 
         card.appendChild(title);
 
-        const validImages =
-            Array.isArray(accommodation.images)
-                ? accommodation.images.filter(Boolean)
+        const images =
+            Array.isArray(
+                accommodation.images
+            )
+                ? accommodation.images
+                    .filter(Boolean)
                 : [];
 
-        if (validImages.length > 0) {
+        if (images.length > 0) {
             const slideshow =
                 document.createElement("div");
 
             slideshow.className =
                 "slideshow-container";
 
-            validImages.forEach(
-                (imagePath, imageIndex) => {
+            images.forEach(
+                (
+                    imagePath,
+                    imageIndex
+                ) => {
                     const slide =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     slide.className =
                         imageIndex === 0
@@ -1009,23 +1398,31 @@
                             : "slide";
 
                     const image =
-                        document.createElement("img");
+                        document.createElement(
+                            "img"
+                        );
 
                     image.src = imagePath;
+
                     image.alt =
-                        `${accommodation.name} image ${
-                            imageIndex + 1
-                        }`;
+                        `${accommodation.name || "Accommodation"} image ${imageIndex + 1}`;
 
                     slide.appendChild(image);
-                    slideshow.appendChild(slide);
+
+                    slideshow.appendChild(
+                        slide
+                    );
                 }
             );
 
-            card.appendChild(slideshow);
+            card.appendChild(
+                slideshow
+            );
 
-            if (validImages.length > 1) {
-                startSlideshow(slideshow);
+            if (images.length > 1) {
+                startSlideshow(
+                    slideshow
+                );
             }
         }
 
@@ -1040,7 +1437,9 @@
             bookingLink.href =
                 accommodation.booking;
 
-            bookingLink.target = "_blank";
+            bookingLink.target =
+                "_blank";
+
             bookingLink.rel =
                 "noopener noreferrer";
 
@@ -1050,7 +1449,9 @@
             bookingLink.textContent =
                 "📄 View Booking";
 
-            card.appendChild(bookingLink);
+            card.appendChild(
+                bookingLink
+            );
         }
 
         container.appendChild(card);
@@ -1061,26 +1462,30 @@
 
         setInterval(() => {
             const slides =
-                slideshow.querySelectorAll(".slide");
+                slideshow.querySelectorAll(
+                    ".slide"
+                );
 
             if (slides.length < 2) {
                 return;
             }
 
-            slides[currentSlide].classList.remove(
+            slides[currentSlide]
+                .classList.remove(
                 "active"
             );
 
             currentSlide =
-                (currentSlide + 1) % slides.length;
+                (
+                    currentSlide + 1
+                ) % slides.length;
 
-            slides[currentSlide].classList.add(
+            slides[currentSlide]
+                .classList.add(
                 "active"
             );
         }, 4000);
     }
-
-    initializeLondonPage();
 </script>
 
 </body>
