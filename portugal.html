@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta
+            name="format-detection"
+            content="telephone=no"
+    />
+
+    <title>Portugal | Europe 2026</title>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+            rel="stylesheet"
+    />
+
+    <style>
+        :root {
+            --navy: #16324f;
+            --navy-light: #244d70;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --light-grey: #eeeeee;
+            --dark-overlay: rgba(0, 0, 0, 0.64);
+            --card-background: rgba(255, 255, 255, 0.1);
+            --danger: #ffb3b3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+
+            background:
+                    linear-gradient(
+                            var(--dark-overlay),
+                            var(--dark-overlay)
+                    ),
+                    url("./Visuals/portugal.jpg")
+                    no-repeat center center fixed;
+
+            background-size: cover;
+            color: var(--white);
+        }
+
+        header {
+            padding: 2.5rem 1rem;
+            background: rgba(22, 50, 79, 0.88);
+            border-bottom: 3px solid var(--gold);
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(3rem, 9vw, 5rem);
+            letter-spacing: 5px;
+            color: var(--white);
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        main {
+            width: min(100% - 2rem, 850px);
+            margin: 0 auto;
+            padding: 2rem 0 4rem;
+        }
+
+        .content {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.58);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .content h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .content p {
+            line-height: 1.7;
+        }
+
+        /* Firebase status */
+
+        .database-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            padding: 0.7rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #cccccc;
+        }
+
+        .status-dot.connected {
+            background: #4bd66a;
+        }
+
+        .status-dot.error {
+            background: #ff5757;
+        }
+
+        /* Accommodations */
+
+        .accommodation-card {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: var(--card-background);
+        }
+
+        .accommodation-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .accommodation-title {
+            margin-bottom: 0.75rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            display: block;
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .booking-link {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .booking-link:hover,
+        .booking-link:focus {
+            text-decoration: underline;
+        }
+
+        /* Activities */
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            margin: 0.8rem 0;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+
+        .activity-item input[type="checkbox"] {
+            width: 19px;
+            height: 19px;
+            margin: 0;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+
+        .activity-item label {
+            flex: 1;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .activity-item.completed label {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .activity-link {
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .activity-link:hover,
+        .activity-link:focus {
+            text-decoration: underline;
+        }
+
+        .instagram-icon {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            vertical-align: middle;
+        }
+
+        /* Progress bar */
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: var(--light-grey);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: 10px;
+            background-color: var(--gold);
+            transition: width 0.35s ease;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 0.9rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.94);
+            color: #222222;
+            font: inherit;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+            outline: 2px solid rgba(212, 175, 55, 0.35);
+        }
+
+        .primary-button,
+        .navigation-button {
+            padding: 0.9rem 1.2rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background-color: var(--navy);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+
+            transition:
+                    background-color 0.3s ease,
+                    border-color 0.3s ease,
+                    transform 0.3s ease;
+        }
+
+        .primary-button:hover,
+        .primary-button:focus,
+        .navigation-button:hover,
+        .navigation-button:focus {
+            border-color: var(--gold);
+            background-color: var(--navy-light);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .primary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-message {
+            min-height: 1.2rem;
+            margin-top: 0.7rem;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .form-message.error {
+            color: var(--danger);
+        }
+
+        .loading-message,
+        .empty-message {
+            color: #dddddd;
+            font-style: italic;
+        }
+
+        /* Navigation */
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        footer {
+            padding: 1.3rem 1rem;
+            background: rgba(22, 50, 79, 0.9);
+            border-top: 2px solid var(--gold);
+            text-align: center;
+            color: #eeeeee;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            main {
+                width: min(100% - 1rem, 850px);
+            }
+
+            .content {
+                padding: 1.1rem;
+            }
+
+            .slide img {
+                height: 220px;
+            }
+
+            .activity-item {
+                align-items: flex-start;
+            }
+
+            .navigation-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>PORTUGAL</h1>
+    <p>Portugal · Europe 2026</p>
+</header>
+
+<main>
+
+    <section class="content">
+        <h2>📍 Welcome to Portugal</h2>
+
+        <p>
+            Explore Portugal’s historic neighbourhoods, coastal scenery,
+            castles, local food, cultural landmarks, and famous views.
+        </p>
+    </section>
+
+    <section
+            class="content"
+            id="accommodationsContainer"
+    >
+        <h2>🏨 Where We Are Staying</h2>
+
+        <p
+                class="loading-message"
+                id="accommodationLoading"
+        >
+            Loading accommodation information...
+        </p>
+    </section>
+
+    <section class="content">
+        <h2>📸 Activities</h2>
+
+        <div class="database-status">
+            <span
+                    class="status-dot"
+                    id="statusDot"
+            ></span>
+
+            <span id="databaseStatus">
+                Connecting to Europe 2026 Firebase...
+            </span>
+        </div>
+
+        <div class="progress-label">
+            <span>Trip progress</span>
+            <span id="progressText">0%</span>
+        </div>
+
+        <div class="progress-bar-container">
+            <div
+                    class="progress-bar"
+                    id="progressBar"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+            ></div>
+        </div>
+
+        <div id="activitiesContainer">
+            <p class="loading-message">
+                Loading Portugal activities...
+            </p>
+        </div>
+    </section>
+
+    <section class="content">
+        <h2>➕ Add Your Own Activity</h2>
+
+        <div class="form-group">
+            <label for="newActivity">
+                Activity name
+            </label>
+
+            <input
+                    id="newActivity"
+                    class="form-control"
+                    type="text"
+                    placeholder="Example: Afternoon tea"
+                    maxlength="100"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="newTicket">
+                Ticket or website link
+            </label>
+
+            <input
+                    id="newTicket"
+                    class="form-control"
+                    type="url"
+                    placeholder="https://..."
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="newInstagram">
+                Instagram link
+            </label>
+
+            <input
+                    id="newInstagram"
+                    class="form-control"
+                    type="url"
+                    placeholder="https://www.instagram.com/..."
+            />
+        </div>
+
+        <button
+                class="primary-button"
+                id="addActivityButton"
+                type="button"
+        >
+            Add Activity
+        </button>
+
+        <div
+                class="form-message"
+                id="formMessage"
+                aria-live="polite"
+        ></div>
+    </section>
+
+    <nav
+            class="nav-buttons"
+            aria-label="Page navigation"
+    >
+        <a
+                class="navigation-button"
+                href="countries.html"
+        >
+            Back to Countries
+        </a>
+
+        <a
+                class="navigation-button"
+                href="index.html"
+        >
+            Back to Home
+        </a>
+    </nav>
+
+</main>
+
+<footer>
+    <p>Nanase &amp; Kevin · Portugal 2026</p>
+</footer>
+
+<script type="module">
+    /*
+    =====================================================
+    FIREBASE IMPORTS
+    =====================================================
+    */
+
+    import {
+        initializeApp
+    } from
+            "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+    import {
+        getDatabase,
+        ref,
+        get,
+        onValue,
+        set,
+        push
+    } from
+            "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+    /*
+    =====================================================
+    FIREBASE CONFIGURATION
+
+    Replace the placeholder values with the information
+    from your Europe-2026 Firebase project.
+    =====================================================
+    */
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCVDAtuCmkcJuCtyeXe_obac5Tbncm153o",
+
+        authDomain:
+            "europe-2026-19fae.firebaseapp.com",
+
+        databaseURL:
+            "https://europe-2026-19fae-default-rtdb.firebaseio.com",
+
+        projectId:
+            "europe-2026-19fae",
+
+        storageBucket:
+            "europe-2026-19fae.firebasestorage.app",
+
+        messagingSenderId:
+            "948447102106",
+
+        appId:
+            "1:948447102106:web:c05db2fe8750d7a9410b23"
+    };
+
+    /*
+    =====================================================
+    PAGE SETTINGS
+    =====================================================
+    */
+
+    const cityKey = "portugal";
+
+    const defaultActivities = [
+        {
+            name: "Belém Tower",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Jerónimos Monastery",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Explore Alfama",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Tram 28 ride",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "São Jorge Castle",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Time Out Market Lisbon",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Day trip to Sintra",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Pena Palace",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Visit Porto",
+            ticket: "",
+            instagram: ""
+        },
+        {
+            name: "Douro River cruise",
+            ticket: "",
+            instagram: ""
+        }
+    ];
+
+    /*
+    =====================================================
+    PAGE ELEMENTS
+    =====================================================
+    */
+
+    const activitiesContainer =
+        document.getElementById(
+            "activitiesContainer"
+        );
+
+    const progressBar =
+        document.getElementById(
+            "progressBar"
+        );
+
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+    const formMessage =
+        document.getElementById(
+            "formMessage"
+        );
+
+    const addActivityButton =
+        document.getElementById(
+            "addActivityButton"
+        );
+
+    const databaseStatus =
+        document.getElementById(
+            "databaseStatus"
+        );
+
+    const statusDot =
+        document.getElementById(
+            "statusDot"
+        );
+
+    /*
+    =====================================================
+    FIREBASE INITIALIZATION
+    =====================================================
+    */
+
+    let database;
+
+    try {
+        const firebaseApp =
+            initializeApp(firebaseConfig);
+
+        database =
+            getDatabase(firebaseApp);
+
+        setDatabaseStatus(
+            "Connected to Europe 2026 Firebase.",
+            "connected"
+        );
+
+        await Promise.all([
+            initializeActivities(),
+            initializeAccommodations()
+        ]);
+
+
+    } catch (error) {
+        console.error(
+            "Firebase initialization failed:",
+            error
+        );
+
+        setDatabaseStatus(
+            "Firebase could not connect. Check your configuration.",
+            "error"
+        );
+
+        activitiesContainer.innerHTML = `
+            <p class="empty-message">
+                Activities could not be loaded.
+            </p>
+        `;
+
+        addActivityButton.disabled = true;
+    }
+
+    /*
+    =====================================================
+    FIREBASE STATUS
+    =====================================================
+    */
+
+    function setDatabaseStatus(
+        message,
+        status
+    ) {
+        databaseStatus.textContent = message;
+
+        statusDot.classList.remove(
+            "connected",
+            "error"
+        );
+
+        if (status) {
+            statusDot.classList.add(status);
+        }
+    }
+
+    /*
+    =====================================================
+    ACTIVITY INITIALIZATION
+    =====================================================
+    */
+
+    async function initializeActivities() {
+        const activitiesReference =
+            ref(
+                database,
+                `activities/${cityKey}`
+            );
+
+        try {
+            const initialSnapshot =
+                await get(activitiesReference);
+
+            /*
+            Create default activities only when the
+            Portugal activity path does not exist.
+            */
+
+            if (!initialSnapshot.exists()) {
+                const initialData = {};
+
+                defaultActivities.forEach(
+                    (activity, index) => {
+                        initialData[
+                            `activity_${index + 1}`
+                            ] = activity;
+                    }
+                );
+
+                await set(
+                    activitiesReference,
+                    initialData
+                );
+            }
+
+            /*
+            Listen continuously for changes.
+            */
+
+            onValue(
+                activitiesReference,
+                (snapshot) => {
+                    const activities =
+                        normalizeActivities(
+                            snapshot.val()
+                        );
+
+                    displayActivities(
+                        activities
+                    );
+
+                    setDatabaseStatus(
+                        "Connected to Europe 2026 Firebase.",
+                        "connected"
+                    );
+                },
+                (error) => {
+                    console.error(
+                        "Realtime Database read failed:",
+                        error
+                    );
+
+                    setDatabaseStatus(
+                        "Firebase denied access. Check the database rules.",
+                        "error"
+                    );
+
+                    activitiesContainer.innerHTML = `
+                        <p class="empty-message">
+                            Activities could not be loaded.
+                        </p>
+                    `;
+                }
+            );
+        } catch (error) {
+            console.error(
+                "Activity initialization failed:",
+                error
+            );
+
+            setDatabaseStatus(
+                "Activities could not be initialized.",
+                "error"
+            );
+
+            activitiesContainer.innerHTML = `
+                <p class="empty-message">
+                    The Portugal database could not be reached.
+                </p>
+            `;
+        }
+    }
+
+    /*
+    =====================================================
+    NORMALIZE FIREBASE DATA
+    =====================================================
+    */
+
+    function normalizeActivities(rawData) {
+        if (!rawData) {
+            return [];
+        }
+
+        return Object.entries(rawData)
+            .filter(
+                ([, activity]) =>
+                    activity &&
+                    typeof activity === "object"
+            )
+            .map(
+                ([firebaseKey, activity]) => ({
+                    firebaseKey,
+                    name:
+                        activity.name ||
+                        "Unnamed activity",
+                    ticket:
+                        activity.ticket || "",
+                    instagram:
+                        activity.instagram || ""
+                })
+            );
+    }
+
+    /*
+    =====================================================
+    DISPLAY ACTIVITIES
+    =====================================================
+    */
+
+    function displayActivities(activities) {
+        activitiesContainer.innerHTML = "";
+
+        if (activities.length === 0) {
+            activitiesContainer.innerHTML = `
+                <p class="empty-message">
+                    No activities have been added yet.
+                </p>
+            `;
+
+            updateProgress(0);
+            return;
+        }
+
+        activities.forEach((activity) => {
+            const storageKey =
+                `${cityKey}_${activity.firebaseKey}`;
+
+            const activityRow =
+                document.createElement("div");
+
+            activityRow.className =
+                "activity-item";
+
+            const checkbox =
+                document.createElement("input");
+
+            checkbox.type = "checkbox";
+            checkbox.id = storageKey;
+
+            const progressReference = ref(
+                database,
+                `progress/${cityKey}/${activity.firebaseKey}`
+            );
+
+            onValue(progressReference, (snapshot) => {
+                checkbox.checked = snapshot.val() === true;
+
+                activityRow.classList.toggle(
+                    "completed",
+                    checkbox.checked
+                );
+
+                updateProgress(activities.length);
+            });
+
+            checkbox.addEventListener(
+                "change",
+                async () => {
+                    try {
+                        await set(
+                            progressReference,
+                            checkbox.checked
+                        );
+                    } catch (error) {
+                        console.error(
+                            "Progress update failed:",
+                            error
+                        );
+
+                        checkbox.checked =
+                            !checkbox.checked;
+                    }
+                }
+            );
+
+            const label =
+                document.createElement("label");
+
+            label.htmlFor = storageKey;
+            label.textContent = activity.name;
+
+            activityRow.appendChild(
+                checkbox
+            );
+
+            activityRow.appendChild(
+                label
+            );
+
+            if (
+                isValidWebAddress(
+                    activity.ticket
+                )
+            ) {
+                const ticketLink =
+                    document.createElement("a");
+
+                ticketLink.href =
+                    activity.ticket;
+
+                ticketLink.target =
+                    "_blank";
+
+                ticketLink.rel =
+                    "noopener noreferrer";
+
+                ticketLink.className =
+                    "activity-link";
+
+                ticketLink.textContent =
+                    "🎫 Tickets";
+
+                activityRow.appendChild(
+                    ticketLink
+                );
+            }
+
+            if (
+                isValidWebAddress(
+                    activity.instagram
+                )
+            ) {
+                const instagramLink =
+                    document.createElement("a");
+
+                instagramLink.href =
+                    activity.instagram;
+
+                instagramLink.target =
+                    "_blank";
+
+                instagramLink.rel =
+                    "noopener noreferrer";
+
+                instagramLink.setAttribute(
+                    "aria-label",
+                    `View Instagram information for ${activity.name}`
+                );
+
+                const instagramImage =
+                    document.createElement("img");
+
+                instagramImage.src =
+                    "./Visuals/instagram_icon.png";
+
+                instagramImage.alt =
+                    "Instagram";
+
+                instagramImage.className =
+                    "instagram-icon";
+
+                instagramLink.appendChild(
+                    instagramImage
+                );
+
+                activityRow.appendChild(
+                    instagramLink
+                );
+            }
+
+            activitiesContainer.appendChild(
+                activityRow
+            );
+        });
+
+        updateProgress(
+            activities.length
+        );
+    }
+
+    /*
+    =====================================================
+    PROGRESS BAR
+    =====================================================
+    */
+
+    function updateProgress(totalActivities) {
+        if (totalActivities === 0) {
+            progressBar.style.width =
+                "0%";
+
+            progressBar.setAttribute(
+                "aria-valuenow",
+                "0"
+            );
+
+            progressText.textContent =
+                "0%";
+
+            return;
+        }
+
+        const completedActivities = [
+            ...activitiesContainer
+                .querySelectorAll(
+                    'input[type="checkbox"]'
+                )
+        ].filter(
+            (checkbox) =>
+                checkbox.checked
+        ).length;
+
+        const percentage =
+            Math.round(
+                (
+                    completedActivities /
+                    totalActivities
+                ) * 100
+            );
+
+        progressBar.style.width =
+            `${percentage}%`;
+
+        progressBar.setAttribute(
+            "aria-valuenow",
+            String(percentage)
+        );
+
+        progressText.textContent =
+            `${percentage}% (${completedActivities}/${totalActivities})`;
+    }
+
+    /*
+    =====================================================
+    ADD A NEW ACTIVITY
+    =====================================================
+    */
+
+    addActivityButton.addEventListener(
+        "click",
+        handleAddCustomActivity
+    );
+
+    async function handleAddCustomActivity() {
+        const activityInput =
+            document.getElementById(
+                "newActivity"
+            );
+
+        const ticketInput =
+            document.getElementById(
+                "newTicket"
+            );
+
+        const instagramInput =
+            document.getElementById(
+                "newInstagram"
+            );
+
+        const name =
+            activityInput.value.trim();
+
+        const ticket =
+            ticketInput.value.trim();
+
+        const instagram =
+            instagramInput.value.trim();
+
+        clearFormMessage();
+
+        if (!name) {
+            showFormMessage(
+                "Please enter an activity name.",
+                true
+            );
+
+            activityInput.focus();
+            return;
+        }
+
+        if (
+            ticket &&
+            !isValidWebAddress(ticket)
+        ) {
+            showFormMessage(
+                "Please enter a valid ticket or website link.",
+                true
+            );
+
+            ticketInput.focus();
+            return;
+        }
+
+        if (
+            instagram &&
+            !isValidWebAddress(instagram)
+        ) {
+            showFormMessage(
+                "Please enter a valid Instagram link.",
+                true
+            );
+
+            instagramInput.focus();
+            return;
+        }
+
+        addActivityButton.disabled = true;
+        addActivityButton.textContent =
+            "Adding...";
+
+        try {
+            const activitiesReference =
+                ref(
+                    database,
+                    `activities/${cityKey}`
+                );
+
+            await push(
+                activitiesReference,
+                {
+                    name,
+                    ticket,
+                    instagram,
+                    createdAt:
+                        new Date().toISOString()
+                }
+            );
+
+            activityInput.value = "";
+            ticketInput.value = "";
+            instagramInput.value = "";
+
+            showFormMessage(
+                "Activity added successfully."
+            );
+        } catch (error) {
+            console.error(
+                "Activity write failed:",
+                error
+            );
+
+            showFormMessage(
+                "The activity could not be added. Check your Firebase rules.",
+                true
+            );
+        } finally {
+            addActivityButton.disabled =
+                false;
+
+            addActivityButton.textContent =
+                "Add Activity";
+        }
+    }
+
+    function clearFormMessage() {
+        formMessage.textContent = "";
+
+        formMessage.classList.remove(
+            "error"
+        );
+    }
+
+    function showFormMessage(
+        message,
+        isError = false
+    ) {
+        formMessage.textContent =
+            message;
+
+        formMessage.classList.toggle(
+            "error",
+            isError
+        );
+    }
+
+    /*
+    =====================================================
+    URL VALIDATION
+    =====================================================
+    */
+
+    function isValidWebAddress(value) {
+        if (!value) {
+            return false;
+        }
+
+        try {
+            const url = new URL(value);
+
+            return (
+                url.protocol === "http:" ||
+                url.protocol === "https:"
+            );
+        } catch {
+            return false;
+        }
+    }
+
+    /*
+  =====================================================
+  FIREBASE ACCOMMODATIONS
+  =====================================================
+  */
+
+    async function initializeAccommodations() {
+        const accommodationContainer =
+            document.getElementById(
+                "accommodationsContainer"
+            );
+
+        const loadingMessage =
+            document.getElementById(
+                "accommodationLoading"
+            );
+
+        const accommodationsReference =
+            ref(
+                database,
+                `accommodations/${cityKey}`
+            );
+
+        try {
+            const initialSnapshot =
+                await get(accommodationsReference);
+
+            /*
+            Create a sample accommodation only when the
+            Portugal accommodation path is empty.
+            */
+
+            if (!initialSnapshot.exists()) {
+                await set(
+                    ref(
+                        database,
+                        `accommodations/${cityKey}/accommodation_1`
+                    ),
+                    {
+                        name: "Portugal Accommodation",
+
+                        booking: "",
+
+                        images: {
+                            image_1:
+                                "./Accommodations/Portugal/portugal-room-1.jpg",
+
+                            image_2:
+                                "./Accommodations/Portugal/portugal-room-2.jpg",
+
+                            image_3:
+                                "./Accommodations/Portugal/portugal-room-3.jpg"
+                        }
+                    }
+                );
+            }
+
+            /*
+            Listen continuously for accommodation changes.
+            */
+
+            onValue(
+                accommodationsReference,
+
+                (snapshot) => {
+                    const accommodations =
+                        normalizeAccommodations(
+                            snapshot.val()
+                        );
+
+                    displayAccommodations(
+                        accommodations
+                    );
+                },
+
+                (error) => {
+                    console.error(
+                        "Accommodation read failed:",
+                        error
+                    );
+
+                    if (loadingMessage) {
+                        loadingMessage.textContent =
+                            "Accommodation information could not be loaded.";
+                    }
+                }
+            );
+        } catch (error) {
+            console.error(
+                "Accommodation initialization failed:",
+                error
+            );
+
+            if (loadingMessage) {
+                loadingMessage.textContent =
+                    "Accommodation information could not be initialized.";
+            }
+        }
+    }
+
+    /*
+    =====================================================
+    NORMALIZE ACCOMMODATION DATA
+    =====================================================
+    */
+
+    function normalizeAccommodations(rawData) {
+        if (!rawData) {
+            return [];
+        }
+
+        return Object.entries(rawData)
+            .filter(
+                ([, accommodation]) =>
+                    accommodation &&
+                    typeof accommodation === "object"
+            )
+            .map(
+                ([firebaseKey, accommodation]) => ({
+                    firebaseKey,
+
+                    name:
+                        accommodation.name ||
+                        "Portugal accommodation",
+
+                    booking:
+                        accommodation.booking || "",
+
+                    images:
+                        normalizeImages(
+                            accommodation.images
+                        )
+                })
+            );
+    }
+
+    function normalizeImages(rawImages) {
+        if (!rawImages) {
+            return [];
+        }
+
+        if (Array.isArray(rawImages)) {
+            return rawImages.filter(Boolean);
+        }
+
+        return Object.values(rawImages)
+            .filter(Boolean);
+    }
+
+    /*
+    =====================================================
+    DISPLAY ACCOMMODATIONS
+    =====================================================
+    */
+
+    function displayAccommodations(
+        accommodations
+    ) {
+        const accommodationContainer =
+            document.getElementById(
+                "accommodationsContainer"
+            );
+
+        /*
+        Preserve the section heading while replacing
+        previously displayed accommodation cards.
+        */
+
+        accommodationContainer.innerHTML = `
+        <h2>🏨 Where We Are Staying</h2>
+    `;
+
+        if (accommodations.length === 0) {
+            accommodationContainer.insertAdjacentHTML(
+                "beforeend",
+                `
+                <p class="empty-message">
+                    Accommodation details have not been added yet.
+                </p>
+            `
+            );
+
+            return;
+        }
+
+        accommodations.forEach(
+            (accommodation) => {
+                createAccommodationCard(
+                    accommodationContainer,
+                    accommodation
+                );
+            }
+        );
+    }
+
+    function createAccommodationCard(
+        container,
+        accommodation
+    ) {
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "accommodation-card";
+
+        const title =
+            document.createElement("div");
+
+        title.className =
+            "accommodation-title";
+
+        title.textContent =
+            accommodation.name;
+
+        card.appendChild(title);
+
+        if (accommodation.images.length > 0) {
+            const slideshow =
+                document.createElement("div");
+
+            slideshow.className =
+                "slideshow-container";
+
+            accommodation.images.forEach(
+                (imagePath, imageIndex) => {
+                    const slide =
+                        document.createElement("div");
+
+                    slide.className =
+                        imageIndex === 0
+                            ? "slide active"
+                            : "slide";
+
+                    const image =
+                        document.createElement("img");
+
+                    image.src = imagePath;
+
+                    image.alt =
+                        `${accommodation.name} image ${
+                            imageIndex + 1
+                        }`;
+
+                    image.loading = "lazy";
+
+                    slide.appendChild(image);
+
+                    slideshow.appendChild(slide);
+                }
+            );
+
+            card.appendChild(slideshow);
+
+            if (
+                accommodation.images.length > 1
+            ) {
+                startSlideshow(slideshow);
+            }
+        }
+
+        if (
+            isValidWebAddress(
+                accommodation.booking
+            )
+        ) {
+            const bookingLink =
+                document.createElement("a");
+
+            bookingLink.href =
+                accommodation.booking;
+
+            bookingLink.target =
+                "_blank";
+
+            bookingLink.rel =
+                "noopener noreferrer";
+
+            bookingLink.className =
+                "booking-link";
+
+            bookingLink.textContent =
+                "📄 View Booking";
+
+            card.appendChild(
+                bookingLink
+            );
+        }
+
+        container.appendChild(card);
+    }
+
+    /*
+    =====================================================
+    ACCOMMODATION SLIDESHOW
+    =====================================================
+    */
+
+    function startSlideshow(slideshow) {
+        let currentSlide = 0;
+
+        setInterval(() => {
+            const slides =
+                slideshow.querySelectorAll(
+                    ".slide"
+                );
+
+            if (slides.length < 2) {
+                return;
+            }
+
+            slides[currentSlide]
+                .classList.remove("active");
+
+            currentSlide =
+                (
+                    currentSlide + 1
+                ) % slides.length;
+
+            slides[currentSlide]
+                .classList.add("active");
+        }, 4000);
+    }
+</script>
+
+</body>
+</html>
