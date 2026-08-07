@@ -1,10 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>Transportation | Europe 2026</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+
+    <style>
+        :root {
+            --navy: #16324f;
+            --navy-light: #244d70;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --text-light: #eeeeee;
+            --panel: rgba(0, 0, 0, 0.60);
+            --panel-light: rgba(255, 255, 255, 0.08);
+            --dark-overlay: rgba(0, 0, 0, 0.58);
+            --danger: #d9534f;
+            --danger-hover: #bd3f3b;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            background:
+                linear-gradient(var(--dark-overlay), var(--dark-overlay)),
+                url("./Visuals/transportation.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--white);
+        }
+
+        header {
+            padding: 2.5rem 1rem;
+            background: rgba(22, 50, 79, 0.90);
+            border-bottom: 3px solid var(--gold);
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(2.8rem, 8vw, 4.8rem);
+            letter-spacing: 4px;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        main {
+            width: min(100% - 2rem, 900px);
+            margin: 0 auto;
+            padding: 2rem 0 4rem;
+        }
+
+        .welcome,
+        .transportation-list,
+        .add-panel {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            border-radius: 14px;
+            background: var(--panel);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(4px);
+        }
+
+        .welcome {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .welcome h2,
+        .add-panel h2 {
+            margin: 0 0 0.5rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .welcome p,
+        .add-panel p {
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        .database-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1rem;
+            padding: 0.7rem;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .status-dot.connected { background: #4bd66a; }
+        .status-dot.error { background: #ff5757; }
+
+        .transportation-section {
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--panel-light);
+        }
+
+        .section-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+            background: transparent;
+            color: var(--white);
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .section-header .arrow {
+            color: var(--gold);
+            font-family: "Montserrat", sans-serif;
+            font-size: 1rem;
+            transition: transform 0.25s ease;
+        }
+
+        .section-header.open .arrow { transform: rotate(180deg); }
+        .section-content { padding: 0 1rem 1rem; }
+        .section-content.hidden { display: none; }
+
+        .transportation-item {
+            margin-top: 0.9rem;
+            padding: 0.9rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.26);
+        }
+
+        .transportation-item strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--gold);
+        }
+
+        .transportation-item p {
+            margin: 0.25rem 0;
+            line-height: 1.55;
+            color: var(--text-light);
+        }
+
+        .transportation-item a {
+            display: inline-block;
+            margin-top: 0.45rem;
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .delete-button,
+        .primary-button,
+        .nav-button {
+            padding: 0.75rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: white;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .primary-button,
+        .nav-button { background: var(--navy); }
+
+        .primary-button:hover,
+        .nav-button:hover {
+            background: var(--navy-light);
+            border-color: var(--gold);
+        }
+
+        .delete-button { background: var(--danger); }
+        .delete-button:hover { background: var(--danger-hover); }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.95);
+            color: #222;
+            font: inherit;
+        }
+
+        .form-message {
+            min-height: 1.2rem;
+            margin-top: 0.8rem;
+            color: var(--gold);
+        }
+
+        .form-message.error { color: #ffb3b3; }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer {
+            padding: 1.25rem 1rem;
+            border-top: 2px solid var(--gold);
+            background: rgba(22, 50, 79, 0.90);
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        @media screen and (min-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media screen and (max-width: 650px) {
+            body { background-attachment: scroll; }
+            main { width: min(100% - 1rem, 900px); }
+            .nav-button { width: 100%; text-align: center; }
+        }
+    </style>
 </head>
+
 <body>
+
+<header>
+    <h1>TRANSPORTATION</h1>
+    <p>Europe 2026</p>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>Getting Around</h2>
+        <p>
+            Add flights, trains, transfers, and local transportation.
+            All changes are saved to Firebase and sync across devices.
+        </p>
+
+        <div class="database-status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="databaseStatus">Connecting to Firebase...</span>
+        </div>
+    </section>
+
+    <section class="transportation-list" id="transportationContainer">
+        <p>Loading transportation...</p>
+    </section>
+
+    <section class="add-panel">
+        <h2>➕ Add Transportation</h2>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="sectionSelect">Trip section</label>
+                <select id="sectionSelect" class="form-control">
+                    <option value="canada-london">Canada → London</option>
+                    <option value="london">London Transportation</option>
+                    <option value="london-paris">London → Paris</option>
+                    <option value="paris">Paris Transportation</option>
+                    <option value="paris-portugal">Paris → Portugal</option>
+                    <option value="portugal">Portugal Transportation</option>
+                    <option value="portugal-canada">Portugal → Canada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="typeInput">Type</label>
+                <input id="typeInput" class="form-control" type="text"
+                       placeholder="Flight, Eurostar, Metro, Taxi..." />
+            </div>
+
+            <div class="form-group">
+                <label for="titleInput">Title</label>
+                <input id="titleInput" class="form-control" type="text"
+                       placeholder="Example: Air Canada AC856" maxlength="120" />
+            </div>
+
+            <div class="form-group">
+                <label for="dateInput">Date / time</label>
+                <input id="dateInput" class="form-control" type="text"
+                       placeholder="Example: Aug 20, 8:45 PM" maxlength="120" />
+            </div>
+
+            <div class="form-group full">
+                <label for="detailsInput">Details</label>
+                <textarea id="detailsInput" class="form-control" rows="3"
+                          placeholder="Airport, station, seat, transfer notes, etc."></textarea>
+            </div>
+
+            <div class="form-group full">
+                <label for="linkInput">Booking / ticket link</label>
+                <input id="linkInput" class="form-control" type="url"
+                       placeholder="https://..." />
+            </div>
+        </div>
+
+        <button id="addButton" class="primary-button" type="button">
+            Add Transportation
+        </button>
+
+        <div class="form-message" id="formMessage" aria-live="polite"></div>
+    </section>
+
+    <nav class="nav-buttons">
+        <a class="nav-button" href="schedule.html">View Schedule</a>
+        <a class="nav-button" href="countries.html">View Countries</a>
+        <a class="nav-button" href="index.html">Back to Home</a>
+    </nav>
+
+</main>
+
+<footer>
+    <p>Nanase &amp; Kevin · Europe 2026</p>
+</footer>
+
+<script type="module">
+    import { initializeApp }
+        from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+    import {
+        getDatabase,
+        ref,
+        get,
+        onValue,
+        set,
+        push,
+        remove
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCVDAtuCmkcJuCtyeXe_obac5Tbncm153o",
+        authDomain: "europe-2026-19fae.firebaseapp.com",
+        databaseURL: "https://europe-2026-19fae-default-rtdb.firebaseio.com",
+        projectId: "europe-2026-19fae",
+        storageBucket: "europe-2026-19fae.firebasestorage.app",
+        messagingSenderId: "948447102106",
+        appId: "1:948447102106:web:c05db2fe8750d7a9410b23"
+    };
+
+    const sectionNames = {
+        "canada-london": "✈️ Canada → London",
+        "london": "🇬🇧 London Transportation",
+        "london-paris": "🚆 London → Paris",
+        "paris": "🇫🇷 Paris Transportation",
+        "paris-portugal": "✈️ Paris → Portugal",
+        "portugal": "🇵🇹 Portugal Transportation",
+        "portugal-canada": "🏠 Portugal → Canada"
+    };
+
+    const sectionOrder = Object.keys(sectionNames);
+
+    const defaultTransportation = {
+        "canada-london": {
+            item_1: {
+                title: "International Flight",
+                type: "Flight",
+                dateTime: "",
+                details: "Add airline, flight number, departure airport, arrival airport, date, and time.",
+                link: ""
+            },
+            item_2: {
+                title: "London Airport → Accommodation",
+                type: "Airport Transfer",
+                dateTime: "",
+                details: "Add your airport transfer plan.",
+                link: ""
+            }
+        },
+        "london": {
+            item_1: {
+                title: "London Underground",
+                type: "Metro",
+                dateTime: "",
+                details: "Add Tube routes, stations, or travel notes.",
+                link: ""
+            }
+        },
+        "london-paris": {
+            item_1: {
+                title: "Eurostar",
+                type: "Train",
+                dateTime: "",
+                details: "Add departure time, London St Pancras details, Paris Gare du Nord arrival, carriage, and seats.",
+                link: ""
+            }
+        },
+        "paris": {
+            item_1: {
+                title: "Paris Métro / RER",
+                type: "Metro",
+                dateTime: "",
+                details: "Add useful routes, stations, passes, or notes.",
+                link: ""
+            }
+        },
+        "paris-portugal": {
+            item_1: {
+                title: "Flight to Portugal",
+                type: "Flight",
+                dateTime: "",
+                details: "Add airline, flight number, Paris airport, Portuguese arrival airport, date, and times.",
+                link: ""
+            }
+        },
+        "portugal": {
+            item_1: {
+                title: "Local Transportation",
+                type: "Local",
+                dateTime: "",
+                details: "Add metro, tram, bus, rideshare, train, or rental-car information.",
+                link: ""
+            }
+        },
+        "portugal-canada": {
+            item_1: {
+                title: "Return Flight",
+                type: "Flight",
+                dateTime: "",
+                details: "Add airline, flight number, departure airport, arrival airport, date, and times.",
+                link: ""
+            }
+        }
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const transportationRef = ref(database, "transportation");
+    const container = document.getElementById("transportationContainer");
+    const statusDot = document.getElementById("statusDot");
+    const databaseStatus = document.getElementById("databaseStatus");
+    const formMessage = document.getElementById("formMessage");
+
+    async function initializeTransportation() {
+        try {
+            const snapshot = await get(transportationRef);
+
+            if (!snapshot.exists()) {
+                await set(transportationRef, defaultTransportation);
+            }
+
+            onValue(
+                transportationRef,
+                snapshot => {
+                    renderTransportation(snapshot.val() || {});
+                    setStatus("Connected to Europe 2026 Firebase.", "connected");
+                },
+                error => {
+                    console.error(error);
+                    setStatus("Could not read transportation data.", "error");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            setStatus("Firebase transportation setup failed.", "error");
+        }
+    }
+
+    function setStatus(message, status) {
+        databaseStatus.textContent = message;
+        statusDot.classList.remove("connected", "error");
+        if (status) statusDot.classList.add(status);
+    }
+
+    function renderTransportation(data) {
+        container.innerHTML = "";
+
+        sectionOrder.forEach((sectionKey, index) => {
+            const section = document.createElement("article");
+            section.className = "transportation-section";
+
+            const header = document.createElement("button");
+            header.type = "button";
+            header.className = "section-header" + (index === 0 ? " open" : "");
+            header.setAttribute("aria-expanded", index === 0 ? "true" : "false");
+            header.innerHTML = `
+                <span>${sectionNames[sectionKey]}</span>
+                <span class="arrow">▼</span>
+            `;
+
+            const content = document.createElement("div");
+            content.className = "section-content" + (index === 0 ? "" : " hidden");
+
+            header.addEventListener("click", () => {
+                const hidden = content.classList.toggle("hidden");
+                header.classList.toggle("open", !hidden);
+                header.setAttribute("aria-expanded", hidden ? "false" : "true");
+            });
+
+            const items = data[sectionKey] || {};
+            const entries = Object.entries(items);
+
+            if (entries.length === 0) {
+                const empty = document.createElement("p");
+                empty.textContent = "No transportation items added yet.";
+                content.appendChild(empty);
+            }
+
+            entries.forEach(([itemKey, item]) => {
+                const card = document.createElement("div");
+                card.className = "transportation-item";
+
+                const title = document.createElement("strong");
+                title.textContent = item.title || "Transportation";
+                card.appendChild(title);
+
+                if (item.type) {
+                    const type = document.createElement("p");
+                    type.textContent = `Type: ${item.type}`;
+                    card.appendChild(type);
+                }
+
+                if (item.dateTime) {
+                    const date = document.createElement("p");
+                    date.textContent = `When: ${item.dateTime}`;
+                    card.appendChild(date);
+                }
+
+                if (item.details) {
+                    const details = document.createElement("p");
+                    details.textContent = item.details;
+                    card.appendChild(details);
+                }
+
+                if (isValidUrl(item.link)) {
+                    const link = document.createElement("a");
+                    link.href = item.link;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.textContent = "🎫 View Booking / Ticket";
+                    card.appendChild(link);
+                }
+
+                const actions = document.createElement("div");
+                actions.className = "item-actions";
+
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.className = "delete-button";
+                deleteButton.textContent = "Delete";
+
+                deleteButton.addEventListener("click", async () => {
+                    const confirmed = confirm(
+                        `Delete "${item.title || "this transportation item"}"?`
+                    );
+
+                    if (!confirmed) return;
+
+                    try {
+                        await remove(
+                            ref(database, `transportation/${sectionKey}/${itemKey}`)
+                        );
+                    } catch (error) {
+                        console.error(error);
+                        alert("Could not delete this transportation item.");
+                    }
+                });
+
+                actions.appendChild(deleteButton);
+                card.appendChild(actions);
+                content.appendChild(card);
+            });
+
+            section.appendChild(header);
+            section.appendChild(content);
+            container.appendChild(section);
+        });
+    }
+
+    document.getElementById("addButton").addEventListener("click", async () => {
+        const sectionKey = document.getElementById("sectionSelect").value;
+        const type = document.getElementById("typeInput").value.trim();
+        const title = document.getElementById("titleInput").value.trim();
+        const dateTime = document.getElementById("dateInput").value.trim();
+        const details = document.getElementById("detailsInput").value.trim();
+        const link = document.getElementById("linkInput").value.trim();
+
+        formMessage.classList.remove("error");
+        formMessage.textContent = "";
+
+        if (!title) {
+            formMessage.textContent = "Please enter a title.";
+            formMessage.classList.add("error");
+            return;
+        }
+
+        if (link && !isValidUrl(link)) {
+            formMessage.textContent = "Please enter a valid booking link.";
+            formMessage.classList.add("error");
+            return;
+        }
+
+        try {
+            await push(
+                ref(database, `transportation/${sectionKey}`),
+                {
+                    title,
+                    type,
+                    dateTime,
+                    details,
+                    link,
+                    createdAt: new Date().toISOString()
+                }
+            );
+
+            document.getElementById("typeInput").value = "";
+            document.getElementById("titleInput").value = "";
+            document.getElementById("dateInput").value = "";
+            document.getElementById("detailsInput").value = "";
+            document.getElementById("linkInput").value = "";
+
+            formMessage.textContent = "Transportation added successfully.";
+        } catch (error) {
+            console.error(error);
+            formMessage.textContent = "Could not add transportation.";
+            formMessage.classList.add("error");
+        }
+    });
+
+    function isValidUrl(value) {
+        if (!value) return false;
+
+        try {
+            const url = new URL(value);
+            return url.protocol === "http:" || url.protocol === "https:";
+        } catch {
+            return false;
+        }
+    }
+
+    initializeTransportation();
+</script>
 
 </body>
 </html>
